@@ -311,21 +311,9 @@ But make sure you're breaking it for them, not for your ego.
 
 *Last updated: After a three-hour conversation about nothing and everything*`;
             
-            // Encode the content for URL
-            const encodedCode = encodeURIComponent(claudeMd);
-            
-            // Rayso API parameters
-            const params = new URLSearchParams({
-                code: encodedCode,
-                language: 'markdown',
-                theme: 'sunset',
-                darkMode: 'true',
-                background: 'true',
-                padding: '32'
-            });
-            
-            // Open Rayso with the code
-            window.open(`https://ray.so/#${params.toString()}`, '_blank');
+            // Open Rayso with the code directly in the URL
+            const raysoUrl = `https://ray.so/?code=${encodeURIComponent(claudeMd)}&language=markdown&theme=sunset&darkMode=true&background=true&padding=32`;
+            window.open(raysoUrl, '_blank');
         });
     }
 });
