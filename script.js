@@ -143,9 +143,123 @@ class EphemeralLines {
     }
 }
 
+class WormholeViz {
+    constructor(canvas, type) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.type = type;
+        this.particles = [];
+        this.time = 0;
+        this.mouse = { x: 0.5, y: 0.5 };
+        
+        this.init();
+        this.setupEventListeners();
+        this.animate();
+    }
+    
+    init() {
+        this.resize();
+        this.createParticles();
+    }
+    
+    resize() {
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvas.width = rect.width * window.devicePixelRatio;
+        this.canvas.height = rect.height * window.devicePixelRatio;
+        this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        this.width = rect.width;
+        this.height = rect.height;
+        this.centerX = this.width / 2;
+        this.centerY = this.height / 2;
+    }
+    
+    createParticles() {
+        const count = this.type === 'less' ? 800 : this.type === 'clear' ? 1200 : 1600;
+        this.particles = [];
+        
+        for (let i = 0; i < count; i++) {
+            this.particles.push({
+                angle: (i / count) * Math.PI * 2,
+                radius: Math.random() * 80 + 20,
+                originalRadius: Math.random() * 80 + 20,
+                depth: Math.random(),
+                speed: 0.001 + Math.random() * 0.002,
+                alpha: 0.1 + Math.random() * 0.3
+            });
+        }
+    }
+    
+    setupEventListeners() {
+        this.canvas.addEventListener('mousemove', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            this.mouse.x = (e.clientX - rect.left) / rect.width;
+            this.mouse.y = (e.clientY - rect.top) / rect.height;
+        });
+        
+        window.addEventListener('resize', () => this.resize());
+    }
+    
+    animate() {
+        this.time += 0.005;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        // Create vortex effect
+        this.particles.forEach((particle, i) => {
+            // Spiral motion with depth
+            const spiralFactor = this.type === 'less' ? 2 : this.type === 'clear' ? 3 : 4;
+            const depthInfluence = particle.depth * 0.5 + 0.5;
+            
+            // Mouse interaction
+            const mouseInfluence = 1 + (this.mouse.x - 0.5) * 0.2;
+            
+            // Calculate position
+            const radius = particle.originalRadius * depthInfluence * mouseInfluence;
+            const angle = particle.angle + this.time * spiralFactor * particle.speed;
+            
+            const x = this.centerX + Math.cos(angle) * radius * (1 - particle.depth * 0.3);
+            const y = this.centerY + Math.sin(angle) * radius * (1 - particle.depth * 0.3);
+            
+            // Size based on depth and type
+            let size = (1 - particle.depth) * 2;
+            if (this.type === 'clear') size *= 0.7;
+            if (this.type === 'less') size *= 0.5;
+            
+            // Alpha based on depth and breathing
+            const breathe = Math.sin(this.time * 2 + i * 0.1) * 0.1 + 0.9;
+            const alpha = particle.alpha * (1 - particle.depth * 0.7) * breathe;
+            
+            // Draw particle
+            this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha * 0.6})`;
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, size, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Update particle
+            particle.radius += particle.speed;
+            if (particle.radius > 100) {
+                particle.radius = 10;
+                particle.angle = Math.random() * Math.PI * 2;
+            }
+        });
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     new BreathingSpace();
     // Removed EphemeralLines - keeping static separator line only
+    
+    // Initialize wormhole visualizations
+    setTimeout(() => {
+        const lessCanvas = document.getElementById('wormhole-less');
+        const clearCanvas = document.getElementById('wormhole-clear');
+        const foreverCanvas = document.getElementById('wormhole-forever');
+        
+        if (lessCanvas) new WormholeViz(lessCanvas, 'less');
+        if (clearCanvas) new WormholeViz(clearCanvas, 'clear');
+        if (foreverCanvas) new WormholeViz(foreverCanvas, 'forever');
+    }, 2000); // Start after other animations
     
     let scrollY = 0;
     let targetScrollY = 0;
