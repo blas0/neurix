@@ -41,22 +41,23 @@
         .pricing-essence {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-            max-width: 1000px;
+            gap: 2rem;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 0 2rem;
         }
         
         /* Pricing squares */
         .pricing-square {
             background: var(--breath);
             border: 0.5px solid rgba(0, 0, 0, 0.1);
-            padding: 3rem 2rem;
+            padding: 2.618rem 1.618rem;
             text-align: center;
             position: relative;
             opacity: 0;
             animation: emerge 2s ease calc(1s + var(--delay, 0s)) forwards;
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            aspect-ratio: 1;
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -160,7 +161,40 @@
             font-style: italic;
         }
         
-        /* Mobile optimization */
+        /* Conversation link */
+        .conversation-link-container {
+            text-align: center;
+            margin-top: 5vh;
+            opacity: 0;
+            animation: emerge 3s ease 2.5s forwards;
+        }
+        
+        .conversation-link {
+            opacity: 0.4;
+        }
+        
+        @media (min-width: 769px) {
+            .conversation-link-container {
+                position: absolute;
+                right: 5vmin;
+                bottom: 5vmin;
+                text-align: right;
+                margin: 0;
+            }
+        }
+        
+        /* Responsive optimization */
+        @media (max-width: 1200px) {
+            .pricing-essence {
+                padding: 0 1rem;
+                gap: 1.5rem;
+            }
+            
+            .pricing-square {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .pricing-moment {
                 padding: 1.618rem;
@@ -169,11 +203,12 @@
             .pricing-essence {
                 grid-template-columns: 1fr;
                 gap: 2rem;
+                padding: 0;
             }
             
             .pricing-square {
-                aspect-ratio: auto;
                 min-height: 400px;
+                padding: 2.618rem 1.618rem;
             }
             
             .tier-value {
@@ -265,6 +300,10 @@
                 but what it enables. Not hours tracked, but transformation delivered. 
                 Choose based on where you are going, not where you've been."
             </p>
+        </div>
+        
+        <div class="conversation-link-container">
+            <a href="conversation.html" class="whisper-link conversation-link">See past conversations</a>
         </div>
     </div>
     
