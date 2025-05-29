@@ -26,15 +26,16 @@
             display: flex;
             flex-direction: column;
             gap: 5vh;
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
         }
         
         .asset-row {
             display: grid;
             grid-template-columns: 300px 1fr;
-            gap: 5vw;
+            gap: 3rem;
             align-items: start;
+            justify-content: center;
             opacity: 0;
             animation: emerge 2s ease calc(0.5s + var(--delay, 0s)) forwards;
         }
@@ -135,13 +136,15 @@
             }
             
             .asset-row {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
             }
             
             .asset-square {
                 width: 100%;
                 height: 250px;
+                order: 2; /* Square comes second on mobile */
             }
             
             .void-return {
@@ -150,6 +153,8 @@
             
             .asset-description {
                 padding-top: 0;
+                order: 1; /* Description comes first on mobile */
+                margin-bottom: 1rem;
             }
         }
     </style>

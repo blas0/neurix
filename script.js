@@ -145,7 +145,7 @@ class EphemeralLines {
 
 document.addEventListener('DOMContentLoaded', () => {
     new BreathingSpace();
-    new EphemeralLines();
+    // Removed EphemeralLines - keeping static separator line only
     
     let scrollY = 0;
     let targetScrollY = 0;
