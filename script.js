@@ -186,17 +186,46 @@ document.addEventListener('DOMContentLoaded', () => {
         conversationLink.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Fetch README content instead of hardcoding
-            fetch('README.md')
-                .then(response => response.text())
-                .then(readmeContent => {
-                    // Use README content for ray.so
-                    const raysoUrl = `https://ray.so/?code=${encodeURIComponent(readmeContent)}&language=markdown&theme=sunset&darkMode=true&background=true&padding=32`;
-                    window.open(raysoUrl, '_blank');
+            // Fetch CLAUDE.md content
+            fetch('CLAUDE.md')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('CLAUDE.md not found');
+                    }
+                    return response.text();
+                })
+                .then(claudeMdContent => {
+                    // Create form and submit to ray.so API
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'https://ray.so/api/';
+                    form.target = '_blank';
+                    
+                    // Add form fields based on Rayso API
+                    const fields = {
+                        code: claudeMdContent,
+                        language: 'markdown',
+                        theme: 'sunset',
+                        darkMode: 'true',
+                        background: 'true',
+                        padding: '32'
+                    };
+                    
+                    Object.entries(fields).forEach(([key, value]) => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = key;
+                        input.value = value;
+                        form.appendChild(input);
+                    });
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                    document.body.removeChild(form);
                 })
                 .catch(err => {
-                    console.error('Failed to fetch README:', err);
-                    alert('Failed to load README content');
+                    console.error('Failed to fetch CLAUDE.md:', err);
+                    alert('Failed to load conversation document');
                 });
         });
     }
