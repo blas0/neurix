@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>∞</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Pricing page specific styles */
+        .pricing-moment {
+            min-height: 100vh;
+            padding: 5vmin;
+            position: relative;
+        }
+        
+        /* Navigation */
+        .void-return {
+            text-align: center;
+            margin-bottom: 10vh;
+            opacity: 0;
+            animation: emerge 2s ease forwards;
+        }
+        
+        /* Pricing header */
+        .pricing-truth {
+            text-align: center;
+            margin-bottom: 8vh;
+            opacity: 0;
+            animation: emerge 2s ease 0.5s forwards;
+        }
+        
+        .pricing-whisper {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.618rem;
+            font-style: italic;
+            opacity: 0.6;
+            margin-bottom: 2rem;
+        }
+        
+        /* Pricing grid */
+        .pricing-essence {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        /* Pricing squares */
+        .pricing-square {
+            background: var(--breath);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            animation: emerge 2s ease calc(1s + var(--delay, 0s)) forwards;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .pricing-square:nth-child(1) { --delay: 0s; }
+        .pricing-square:nth-child(2) { --delay: 0.2s; }
+        .pricing-square:nth-child(3) { --delay: 0.4s; }
+        
+        .pricing-square:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Tier names */
+        .tier-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.875rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 2rem;
+        }
+        
+        /* Pricing values */
+        .tier-value {
+            font-family: 'EB Garamond', serif;
+            font-size: 3rem;
+            font-weight: normal;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        .tier-rhythm {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            opacity: 0.4;
+            margin-bottom: 3rem;
+        }
+        
+        /* Features as poetry */
+        .tier-features {
+            text-align: left;
+            margin-bottom: 3rem;
+            flex-grow: 1;
+        }
+        
+        .feature {
+            font-family: 'EB Garamond', serif;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            opacity: 0.7;
+            margin-bottom: 0.618rem;
+            position: relative;
+            padding-left: 1.618rem;
+        }
+        
+        .feature::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            opacity: 0.3;
+        }
+        
+        /* Begin button */
+        .begin-whisper {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            color: var(--void);
+            text-decoration: none;
+            opacity: 0.6;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .begin-whisper:hover {
+            opacity: 1;
+            background: var(--void);
+            color: var(--breath);
+        }
+        
+        /* Philosophy note */
+        .pricing-philosophy {
+            text-align: center;
+            margin-top: 10vh;
+            max-width: 60ch;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: emerge 3s ease 2s forwards;
+        }
+        
+        .philosophy-text {
+            font-family: 'EB Garamond', serif;
+            font-size: 1rem;
+            line-height: 1.618;
+            opacity: 0.6;
+            font-style: italic;
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .pricing-moment {
+                padding: 1.618rem;
+            }
+            
+            .pricing-essence {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .pricing-square {
+                aspect-ratio: auto;
+                min-height: 400px;
+            }
+            
+            .tier-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pricing-moment">
+        <div class="void-return">
+            <a href="index.html" class="whisper-link">← Return to void</a>
+        </div>
+        
+        <div class="pricing-truth">
+            <p class="pricing-whisper">Value is not calculated. It is felt.</p>
+        </div>
+        
+        <div class="pricing-essence">
+            <!-- Simple -->
+            <div class="pricing-square">
+                <div>
+                    <div class="tier-name">Simple</div>
+                    <div class="tier-value">$3k</div>
+                    <div class="tier-rhythm">one breath</div>
+                    
+                    <div class="tier-features">
+                        <div class="feature">Single page essence</div>
+                        <div class="feature">Mobile-first truth</div>
+                        <div class="feature">Typography that breathes</div>
+                        <div class="feature">One week of silence</div>
+                        <div class="feature">Deploy to the void</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <a href="mailto:matthew@neurix.co?subject=Simple" class="begin-whisper">Begin</a>
+                </div>
+            </div>
+            
+            <!-- Complex -->
+            <div class="pricing-square">
+                <div>
+                    <div class="tier-name">Complex</div>
+                    <div class="tier-value">$8k</div>
+                    <div class="tier-rhythm">deeper rhythm</div>
+                    
+                    <div class="tier-features">
+                        <div class="feature">Multi-page symphony</div>
+                        <div class="feature">Interactive elements</div>
+                        <div class="feature">Content that evolves</div>
+                        <div class="feature">Three weeks of iteration</div>
+                        <div class="feature">Performance as prayer</div>
+                        <div class="feature">Analytics without ego</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <a href="mailto:matthew@neurix.co?subject=Complex" class="begin-whisper">Journey</a>
+                </div>
+            </div>
+            
+            <!-- Custom -->
+            <div class="pricing-square">
+                <div>
+                    <div class="tier-name">Custom</div>
+                    <div class="tier-value">∞</div>
+                    <div class="tier-rhythm">conversation</div>
+                    
+                    <div class="tier-features">
+                        <div class="feature">Begin with coffee</div>
+                        <div class="feature">Build what matters</div>
+                        <div class="feature">Systems that scale</div>
+                        <div class="feature">Time as needed</div>
+                        <div class="feature">Partnership, not service</div>
+                        <div class="feature">Until it feels right</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <a href="mailto:matthew@neurix.co?subject=Conversation" class="begin-whisper">Talk</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pricing-philosophy">
+            <p class="philosophy-text">
+                "Pricing is a conversation about value. Not what something costs, 
+                but what it enables. Not hours tracked, but transformation delivered. 
+                Choose based on where you are going, not where you've been."
+            </p>
+        </div>
+    </div>
+    
+    <div class="invisible-structure" aria-hidden="true">
+        <div class="golden-grid"></div>
+    </div>
+</body>
+</html>
