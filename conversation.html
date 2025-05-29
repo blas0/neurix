@@ -147,15 +147,21 @@
         fetch('CLAUDE.md')
             .then(response => response.text())
             .then(content => {
-                // Escape HTML characters to display raw markdown
-                const escapedContent = content
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#039;');
+                // Create a pre element to preserve formatting
+                const pre = document.createElement('pre');
+                pre.style.cssText = `
+                    margin: 0;
+                    font-family: inherit;
+                    font-size: inherit;
+                    line-height: inherit;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                `;
+                pre.textContent = content;
                 
-                document.getElementById('claude-content').textContent = content;
+                const container = document.getElementById('claude-content');
+                container.innerHTML = '';
+                container.appendChild(pre);
             })
             .catch(err => {
                 console.error('Failed to load CLAUDE.md:', err);
