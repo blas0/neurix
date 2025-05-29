@@ -184,6 +184,10 @@ body {
     padding-bottom: 10vh;
     opacity: 0;
     animation: emerge 3s ease 6s forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
 }
 
 .whisper-link {
@@ -195,6 +199,7 @@ body {
     text-decoration: none;
     position: relative;
     transition: color 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    display: inline-block;
 }
 
 .whisper-link::after {
