@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --void: #000000;
+    --breath: #ffffff;
+    --whisper: #666666;
+    --golden: 1.618;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--breath);
+    color: var(--void);
+    font-family: 'EB Garamond', serif;
+    line-height: var(--golden);
+}
+
+.moment {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5vmin;
+    position: relative;
+}
+
+.thought {
+    opacity: 0;
+    animation: emerge 3s ease forwards;
+}
+
+.serif-whisper {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--whisper);
+    max-width: 38ch;
+}
+
+.silence {
+    height: 20vh;
+    width: 100%;
+    position: relative;
+}
+
+.silence::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--void) 20%, var(--void) 80%, transparent);
+    opacity: 0.1;
+}
+
+.truth {
+    text-align: center;
+    transform: scale(0.9);
+    opacity: 0;
+    animation: truthReveal 4s ease 2s forwards;
+}
+
+.mono-truth {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(0.875rem, 2vw, 1.25rem);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--void);
+}
+
+.breathing-space {
+    height: 40vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.conversation-fragment {
+    opacity: 0;
+    animation: emerge 5s ease 3s forwards;
+}
+
+.serif-memory {
+    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    line-height: 2;
+    color: var(--void);
+    max-width: 60ch;
+    margin: 0 auto;
+}
+
+.temporal-mark {
+    text-align: center;
+    margin: 10vh 0;
+}
+
+.mono-timestamp {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--whisper);
+    opacity: 0.5;
+}
+
+.work-essence {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5vw;
+    margin: 10vh 0;
+    padding: 0 10vw;
+}
+
+.work-breath {
+    text-align: center;
+    opacity: 0;
+    animation: emerge 2s ease calc(4s + var(--delay, 0s)) forwards;
+}
+
+.work-breath:nth-child(1) { --delay: 0.2s; }
+.work-breath:nth-child(2) { --delay: 0.4s; }
+.work-breath:nth-child(3) { --delay: 0.6s; }
+
+.work-void {
+    width: 100%;
+    aspect-ratio: var(--golden);
+    background: var(--breath);
+    border: 1px solid var(--void);
+    margin-bottom: 2vh;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.work-void::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--void);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.work-breath:hover .work-void::before {
+    transform: scaleY(1);
+}
+
+.work-truth {
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    color: var(--void);
+    opacity: 0.7;
+}
+
+.final-thought {
+    text-align: center;
+    margin-top: 15vh;
+    opacity: 0;
+    animation: emerge 6s ease 5s forwards;
+}
+
+.serif-dissolve {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    line-height: 1.8;
+    color: var(--void);
+    font-style: italic;
+}
+
+.connection {
+    text-align: center;
+    margin-top: 10vh;
+    padding-bottom: 10vh;
+    opacity: 0;
+    animation: emerge 3s ease 6s forwards;
+}
+
+.whisper-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.875rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--whisper);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.whisper-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--void);
+    transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.whisper-link:hover {
+    color: var(--void);
+}
+
+.whisper-link:hover::after {
+    width: 100%;
+}
+
+.invisible-structure {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.golden-grid {
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: calc(100vw / 21) calc(100vw / 21);
+}
+
+@keyframes emerge {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes truthReveal {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .work-essence {
+        grid-template-columns: 1fr;
+        padding: 0;
+    }
+    
+    .moment {
+        padding: 8vmin 5vmin;
+    }
+}

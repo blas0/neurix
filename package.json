@@ -1,0 +1,14 @@
+{
+  "name": "neurix-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A timeless creative portfolio",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Static site - no build required'",
+    "preview": "python -m http.server 8000"
+  },
+  "keywords": ["portfolio", "creative", "minimal"],
+  "author": "matthew@neurix.co",
+  "license": "UNLICENSED"
+}
