@@ -86,76 +86,14 @@
             font-family: 'IBM Plex Mono', monospace;
         }
         
-        .markdown-content {
-            font-size: 0.875rem;
+        .raw-text {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            line-height: 1.618;
             padding-top: 1.618rem;
-        }
-        
-        .markdown-content h1 {
-            font-size: 1.618rem;
-            font-weight: normal;
-            margin-bottom: 0.618rem;
-        }
-        
-        .markdown-content h2 {
-            font-size: 1.382rem;
-            font-weight: normal;
-            margin-top: 1.618rem;
-            margin-bottom: 0.618rem;
-        }
-        
-        .markdown-content h3 {
-            font-size: 1.146rem;
-            font-weight: normal;
-            margin-top: 1rem;
-            margin-bottom: 0.382rem;
-        }
-        
-        .markdown-content p {
-            margin-bottom: 0.618rem;
-        }
-        
-        .markdown-content ul {
-            margin-left: 1.618rem;
-            margin-bottom: 0.618rem;
-        }
-        
-        .markdown-content li {
-            margin-bottom: 0.236rem;
-        }
-        
-        .markdown-content code {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.8em;
-            background: rgba(0, 0, 0, 0.05);
-            padding: 0.1rem 0.2rem;
-            border-radius: 2px;
-        }
-        
-        .markdown-content pre {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.8rem;
-            background: rgba(0, 0, 0, 0.05);
-            padding: 0.618rem;
-            margin: 0.618rem 0;
-            border-radius: 2px;
-            overflow-x: auto;
-        }
-        
-        .markdown-content pre code {
-            background: none;
-            padding: 0;
-        }
-        
-        .markdown-content hr {
-            border: none;
-            height: 0.5px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 1.618rem 0;
-        }
-        
-        .markdown-content em {
-            font-style: italic;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            opacity: 0.8;
         }
         
         @media (max-width: 768px) {
@@ -176,7 +114,7 @@
     <div class="grid-container">
         <div class="grid-square">
             <span class="roman-numeral">I</span>
-            <div class="markdown-content" id="claude-content"></div>
+            <div class="raw-text" id="claude-content"></div>
         </div>
         <div class="grid-square">
             <span class="roman-numeral">II</span>
@@ -205,40 +143,23 @@
     </div>
     
     <script>
-        // Fetch and display CLAUDE.md in markdown format
+        // Fetch and display CLAUDE.md as raw text
         fetch('CLAUDE.md')
             .then(response => response.text())
             .then(content => {
-                // Simple markdown parser
-                const parseMarkdown = (text) => {
-                    return text
-                        // Headers
-                        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-                        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-                        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-                        // Horizontal rules
-                        .replace(/^---$/gm, '<hr>')
-                        // Code blocks
-                        .replace(/```javascript\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-                        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-                        // Inline code
-                        .replace(/`([^`]+)`/g, '<code>$1</code>')
-                        // Lists
-                        .replace(/^- (.+)$/gm, '<li>$1</li>')
-                        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-                        // Emphasis
-                        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-                        // Paragraphs
-                        .replace(/\n\n/g, '</p><p>')
-                        .replace(/^([^<].*)$/gm, '<p>$1</p>')
-                        .replace(/<p><\/p>/g, '');
-                };
+                // Escape HTML characters to display raw markdown
+                const escapedContent = content
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
                 
-                document.getElementById('claude-content').innerHTML = parseMarkdown(content);
+                document.getElementById('claude-content').textContent = content;
             })
             .catch(err => {
                 console.error('Failed to load CLAUDE.md:', err);
-                document.getElementById('claude-content').innerHTML = '<p style="opacity: 0.5;">Failed to load document</p>';
+                document.getElementById('claude-content').textContent = 'Failed to load document';
             });
     </script>
 </body>
