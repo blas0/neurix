@@ -53,85 +53,10 @@
             background: rgba(0, 0, 0, 0.2);
         }
         
-        h1 {
-            font-size: 1.618rem;
-            font-weight: normal;
-            margin-bottom: 0.618rem;
-            opacity: 0.9;
-        }
-        
-        h2 {
-            font-size: 1.2rem;
-            font-weight: normal;
-            margin-top: 2.618rem;
-            margin-bottom: 1rem;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        h3 {
-            font-size: 1rem;
-            font-weight: normal;
-            margin-top: 1.618rem;
-            margin-bottom: 0.618rem;
-            opacity: 0.7;
-        }
-        
-        p {
-            margin-bottom: 1rem;
-            opacity: 0.8;
-            hanging-punctuation: first;
-        }
-        
-        ul {
-            list-style: none;
-            margin-left: 1.618rem;
-            margin-bottom: 1rem;
-        }
-        
-        li {
-            position: relative;
-            margin-bottom: 0.382rem;
-            opacity: 0.8;
-        }
-        
-        li:before {
-            content: "—";
-            position: absolute;
-            left: -1.618rem;
-            opacity: 0.5;
-        }
-        
-        code {
-            background: rgba(0, 0, 0, 0.05);
-            padding: 0.1rem 0.3rem;
-            border-radius: 2px;
-            font-size: 0.9em;
-        }
-        
-        pre {
-            background: rgba(0, 0, 0, 0.05);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        
-        pre code {
-            background: none;
-            padding: 0;
-        }
-        
-        hr {
-            border: none;
-            height: 1px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 2.618rem 0;
-        }
-        
-        em {
-            font-style: italic;
+        /* Raw text display */
+        .conversation-column {
+            white-space: pre-wrap;
+            word-wrap: break-word;
             opacity: 0.8;
         }
         
@@ -193,57 +118,34 @@
     </div>
     
     <script>
-        // Fetch and parse CLAUDE.md
+        // Fetch CLAUDE.md as raw text
         fetch('CLAUDE.md')
             .then(response => response.text())
             .then(content => {
-                // Simple markdown parser for our specific needs
-                const parseMarkdown = (text) => {
+                // Split content into three equal parts for columns
+                const lines = content.split('\n');
+                const linesPerColumn = Math.ceil(lines.length / 3);
+                
+                const column1Lines = lines.slice(0, linesPerColumn);
+                const column2Lines = lines.slice(linesPerColumn, linesPerColumn * 2);
+                const column3Lines = lines.slice(linesPerColumn * 2);
+                
+                // Function to escape HTML and preserve whitespace
+                const formatText = (text) => {
                     return text
-                        // Headers
-                        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-                        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-                        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-                        // Code blocks
-                        .replace(/```javascript\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-                        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-                        // Inline code
-                        .replace(/`([^`]+)`/g, '<code>$1</code>')
-                        // Lists
-                        .replace(/^- (.+)$/gm, '<li>$1</li>')
-                        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-                        // Emphasis
-                        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-                        // Horizontal rules
-                        .replace(/^---$/gm, '<hr>')
-                        // Paragraphs
-                        .replace(/\n\n/g, '</p><p>')
-                        .replace(/^([^<].*)$/gm, '<p>$1</p>')
-                        .replace(/<p><\/p>/g, '');
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#039;')
+                        .replace(/  /g, '&nbsp;&nbsp;')
+                        .replace(/\n/g, '<br>');
                 };
                 
-                // Split content into sections
-                const sections = content.split(/\n---\n/);
-                const column1Content = [];
-                const column2Content = [];
-                const column3Content = [];
-                
-                // Distribute content across columns
-                sections.forEach((section, index) => {
-                    const parsed = parseMarkdown(section.trim());
-                    if (index % 3 === 0) {
-                        column1Content.push(parsed);
-                    } else if (index % 3 === 1) {
-                        column2Content.push(parsed);
-                    } else {
-                        column3Content.push(parsed);
-                    }
-                });
-                
-                // Populate columns
-                document.getElementById('column-1').innerHTML = column1Content.join('<hr>');
-                document.getElementById('column-2').innerHTML = column2Content.join('<hr>');
-                document.getElementById('column-3').innerHTML = column3Content.join('<hr>');
+                // Populate columns with raw text
+                document.getElementById('column-1').innerHTML = formatText(column1Lines.join('\n'));
+                document.getElementById('column-2').innerHTML = formatText(column2Lines.join('\n'));
+                document.getElementById('column-3').innerHTML = formatText(column3Lines.join('\n'));
                 
                 // Add subtle scroll sync between columns
                 const columns = document.querySelectorAll('.conversation-column');
