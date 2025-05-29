@@ -318,10 +318,10 @@ But make sure you're breaking it for them, not for your ego.
             const params = new URLSearchParams({
                 code: encodedCode,
                 language: 'markdown',
-                theme: 'candy',
+                theme: 'sunset',
                 darkMode: 'true',
                 background: 'true',
-                padding: '64'
+                padding: '32'
             });
             
             // Open Rayso with the code
