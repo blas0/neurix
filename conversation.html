@@ -145,8 +145,17 @@
     <script>
         // Fetch and display CLAUDE.md as raw text
         fetch('CLAUDE.md')
-            .then(response => response.text())
+            .then(response => {
+                console.log('Fetch response status:', response.status);
+                console.log('Fetch response headers:', response.headers.get('content-type'));
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
             .then(content => {
+                console.log('Fetched content preview:', content.substring(0, 100));
+                
                 // Create a pre element to preserve formatting
                 const pre = document.createElement('pre');
                 pre.style.cssText = `
@@ -165,7 +174,7 @@
             })
             .catch(err => {
                 console.error('Failed to load CLAUDE.md:', err);
-                document.getElementById('claude-content').textContent = 'Failed to load document';
+                document.getElementById('claude-content').textContent = 'Failed to load document: ' + err.message;
             });
     </script>
 </body>
