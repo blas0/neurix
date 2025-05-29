@@ -14,12 +14,15 @@
         body {
             background: #fafafa;
             color: #000;
-            font-family: 'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', 'Monaco', monospace;
-            font-size: 14px;
+            font-family: 'EB Garamond', Georgia, serif;
+            font-size: 16px;
             line-height: 1.618;
             overflow: hidden;
             width: 100vw;
             height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .void-link {
@@ -31,14 +34,212 @@
             opacity: 0.3;
             transition: opacity 0.3s ease;
             font-size: 0.8rem;
+            font-family: 'IBM Plex Mono', monospace;
         }
         
         .void-link:hover {
             opacity: 0.8;
         }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0;
+            width: 90vmin;
+            height: 90vmin;
+            max-width: 900px;
+            max-height: 900px;
+        }
+        
+        .grid-square {
+            border: 0.5px solid rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 1.618rem;
+        }
+        
+        .grid-square::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .grid-square::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .grid-square::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+        
+        .grid-square:hover::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .roman-numeral {
+            position: absolute;
+            top: 0.618rem;
+            right: 0.618rem;
+            font-size: 0.8rem;
+            opacity: 0.3;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        
+        .markdown-content {
+            font-size: 0.875rem;
+            padding-top: 1.618rem;
+        }
+        
+        .markdown-content h1 {
+            font-size: 1.618rem;
+            font-weight: normal;
+            margin-bottom: 0.618rem;
+        }
+        
+        .markdown-content h2 {
+            font-size: 1.382rem;
+            font-weight: normal;
+            margin-top: 1.618rem;
+            margin-bottom: 0.618rem;
+        }
+        
+        .markdown-content h3 {
+            font-size: 1.146rem;
+            font-weight: normal;
+            margin-top: 1rem;
+            margin-bottom: 0.382rem;
+        }
+        
+        .markdown-content p {
+            margin-bottom: 0.618rem;
+        }
+        
+        .markdown-content ul {
+            margin-left: 1.618rem;
+            margin-bottom: 0.618rem;
+        }
+        
+        .markdown-content li {
+            margin-bottom: 0.236rem;
+        }
+        
+        .markdown-content code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8em;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.1rem 0.2rem;
+            border-radius: 2px;
+        }
+        
+        .markdown-content pre {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.618rem;
+            margin: 0.618rem 0;
+            border-radius: 2px;
+            overflow-x: auto;
+        }
+        
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .markdown-content hr {
+            border: none;
+            height: 0.5px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 1.618rem 0;
+        }
+        
+        .markdown-content em {
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                width: 95vw;
+                height: 95vh;
+            }
+            
+            .grid-square {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <a href="index.html" class="void-link">← Return to void</a>
+    
+    <div class="grid-container">
+        <div class="grid-square">
+            <span class="roman-numeral">I</span>
+            <div class="markdown-content" id="claude-content"></div>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">II</span>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">III</span>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">IV</span>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">V</span>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">VI</span>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">VII</span>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">VIII</span>
+        </div>
+        <div class="grid-square">
+            <span class="roman-numeral">IX</span>
+        </div>
+    </div>
+    
+    <script>
+        // Fetch and display CLAUDE.md in markdown format
+        fetch('CLAUDE.md')
+            .then(response => response.text())
+            .then(content => {
+                // Simple markdown parser
+                const parseMarkdown = (text) => {
+                    return text
+                        // Headers
+                        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                        // Horizontal rules
+                        .replace(/^---$/gm, '<hr>')
+                        // Code blocks
+                        .replace(/```javascript\n([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                        // Inline code
+                        .replace(/`([^`]+)`/g, '<code>$1</code>')
+                        // Lists
+                        .replace(/^- (.+)$/gm, '<li>$1</li>')
+                        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+                        // Emphasis
+                        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+                        // Paragraphs
+                        .replace(/\n\n/g, '</p><p>')
+                        .replace(/^([^<].*)$/gm, '<p>$1</p>')
+                        .replace(/<p><\/p>/g, '');
+                };
+                
+                document.getElementById('claude-content').innerHTML = parseMarkdown(content);
+            })
+            .catch(err => {
+                console.error('Failed to load CLAUDE.md:', err);
+                document.getElementById('claude-content').innerHTML = '<p style="opacity: 0.5;">Failed to load document</p>';
+            });
+    </script>
 </body>
 </html>
