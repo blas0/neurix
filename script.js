@@ -143,16 +143,19 @@ class EphemeralLines {
     }
 }
 
-class MetamorphicForm {
+class TorusFlow {
     constructor(canvas, type) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.type = type;
-        this.time = 2000; // Start after initial pause
+        this.time = 0;
         this.mouse = { x: 0.5, y: 0.5 };
+        this.mouseInfluence = 0;
         
-        // Configuration based on type - inner over outer, simplicity over sensation
+        // Each word carries its own ethereal weight
         this.config = this.getConfig(type);
+        this.particles = [];
+        this.trails = [];
         
         this.init();
         this.setupEventListeners();
@@ -162,35 +165,41 @@ class MetamorphicForm {
     getConfig(type) {
         return {
             less: {
-                numLines: 40,
-                lineSegments: 60,
-                lineAlpha: 0.3,
-                lineWidth: 0.4,
-                morphSpeed: 0.0003,
-                rotateSpeed: 0.0002
+                particleCount: 20,
+                particleSize: 1.5,
+                particleAlpha: 0.6,
+                trailLength: 30,
+                trailAlpha: 0.02,
+                flowSpeed: 0.003,
+                breathingSpeed: 0.0008,
+                torusSize: 0.3
             },
             clear: {
-                numLines: 60,
-                lineSegments: 80,
-                lineAlpha: 0.4,
-                lineWidth: 0.5,
-                morphSpeed: 0.0004,
-                rotateSpeed: 0.00025
+                particleCount: 40,
+                particleSize: 1.2,
+                particleAlpha: 0.5,
+                trailLength: 50,
+                trailAlpha: 0.015,
+                flowSpeed: 0.004,
+                breathingSpeed: 0.001,
+                torusSize: 0.35
             },
             forever: {
-                numLines: 80,
-                lineSegments: 120,
-                lineAlpha: 0.5,
-                lineWidth: 0.6,
-                morphSpeed: 0.0005,
-                rotateSpeed: 0.0003
+                particleCount: 80,
+                particleSize: 1,
+                particleAlpha: 0.4,
+                trailLength: 80,
+                trailAlpha: 0.01,
+                flowSpeed: 0.005,
+                breathingSpeed: 0.0012,
+                torusSize: 0.4
             }
         }[type];
     }
     
     init() {
         this.resize();
-        this.setupForms();
+        this.createParticles();
     }
     
     resize() {
@@ -204,89 +213,44 @@ class MetamorphicForm {
         this.centerY = this.height / 2;
     }
     
-    setupForms() {
-        // Three forms representing transformation from outer complexity to inner simplicity
-        this.forms = [
-            // Form 1: Complex draped cloth-like (outer complexity)
-            (u, v, t) => {
-                const theta = u * Math.PI * 2;
-                const phi = v * Math.PI;
-                const scale = this.width * 0.15;
-                
-                let r = scale + scale * 0.25 * Math.sin(phi * 4 + theta * 2);
-                r += scale * 0.15 * Math.sin(phi * 6) * Math.cos(theta * 3);
-                
-                let x = r * Math.sin(phi) * Math.cos(theta);
-                let y = r * Math.sin(phi) * Math.sin(theta);
-                let z = r * Math.cos(phi) + scale * 0.15 * Math.sin(theta * 5 + phi * 3);
-                
-                return { x, y, z };
-            },
+    createParticles() {
+        this.particles = [];
+        const { particleCount } = this.config;
+        
+        for (let i = 0; i < particleCount; i++) {
+            // Distribute particles evenly along the torus surface
+            const u = (i / particleCount) * Math.PI * 2;
+            const v = Math.random() * Math.PI * 2;
             
-            // Form 2: Angular folded shape (transition)
-            (u, v, t) => {
-                const theta = u * Math.PI * 2;
-                const phi = v * Math.PI;
-                const scale = this.width * 0.18;
-                
-                let r = scale + scale * 0.15 * Math.cos(phi * 8);
-                r *= 0.8 + 0.2 * Math.abs(Math.cos(theta * 2));
-                
-                let x = r * Math.sin(phi) * Math.cos(theta);
-                let y = r * Math.sin(phi) * Math.sin(theta);
-                let z = r * Math.cos(phi) * (0.8 + 0.3 * Math.sin(theta * 4));
-                
-                return { x, y, z };
-            },
-            
-            // Form 3: Simple sphere (inner simplicity)
-            (u, v, t) => {
-                const theta = u * Math.PI * 2;
-                const phi = v * Math.PI;
-                const scale = this.width * 0.12;
-                
-                // Simple sphere with minimal variation - revealing essence
-                let r = scale + scale * 0.05 * Math.sin(phi * 2 + t * 0.001);
-                
-                let x = r * Math.sin(phi) * Math.cos(theta);
-                let y = r * Math.sin(phi) * Math.sin(theta);
-                let z = r * Math.cos(phi);
-                
-                return { x, y, z };
-            }
-        ];
+            this.particles.push({
+                u: u,
+                v: v,
+                life: Math.random(),
+                trail: []
+            });
+        }
     }
     
-    interpolateForms(formA, formB, u, v, t, blend) {
-        const pointA = formA(u, v, t);
-        const pointB = formB(u, v, t);
+    // Sacred geometry of the torus - the shape of eternal return
+    torusPoint(u, v, time) {
+        const { torusSize, breathingSpeed } = this.config;
         
-        // Easing function - open heart over thought
-        const easedBlend = blend < 0.5
-            ? 4 * blend * blend * blend
-            : 1 - Math.pow(-2 * blend + 2, 3) / 2;
+        // The torus breathes with cosmic rhythm
+        const breathing = 1 + Math.sin(time * breathingSpeed) * 0.1;
         
-        return {
-            x: pointA.x * (1 - easedBlend) + pointB.x * easedBlend,
-            y: pointA.y * (1 - easedBlend) + pointB.y * easedBlend,
-            z: pointA.z * (1 - easedBlend) + pointB.z * easedBlend
-        };
-    }
-    
-    getCurrentForm(u, v, t) {
-        const totalForms = this.forms.length;
-        const cycleTime = 800; // Time to complete one transformation
-        const position = (t % (cycleTime * totalForms)) / cycleTime;
-        const formIndex = Math.floor(position);
-        const nextFormIndex = (formIndex + 1) % totalForms;
+        // Major radius (from center to tube center)
+        const R = this.width * torusSize * breathing;
+        // Minor radius (tube radius) 
+        const r = R * 0.3;
         
-        const rawBlend = position - formIndex;
+        // Transformation adds organic movement
+        const transform = Math.sin(time * breathingSpeed * 0.5) * 0.05;
         
-        return this.interpolateForms(
-            this.forms[formIndex], 
-            this.forms[nextFormIndex], 
-            u, v, t, rawBlend
-        );
+        const x = (R + r * Math.cos(v)) * Math.cos(u);
+        const y = (R + r * Math.cos(v)) * Math.sin(u) * (1 + transform);
+        const z = r * Math.sin(v);
+        
+        return { x, y, z };
     }
     
     setupEventListeners() {
@@ -294,6 +258,14 @@ class MetamorphicForm {
             const rect = this.canvas.getBoundingClientRect();
             this.mouse.x = (e.clientX - rect.left) / rect.width;
             this.mouse.y = (e.clientY - rect.top) / rect.height;
+        });
+        
+        this.canvas.addEventListener('mouseenter', () => {
+            this.mouseInfluence = 1;
+        });
+        
+        this.canvas.addEventListener('mouseleave', () => {
+            this.mouseInfluence = 0;
         });
         
         window.addEventListener('resize', () => this.resize());
@@ -304,107 +276,84 @@ class MetamorphicForm {
         this.ctx.fillStyle = '#ffffff';
         this.ctx.fillRect(0, 0, this.width, this.height);
         
-        // Calculate rotation - slow, contemplative
-        const rotateX = Math.sin(this.time * this.config.rotateSpeed) * 0.3;
-        const rotateY = Math.cos(this.time * this.config.rotateSpeed * 0.7) * 0.2;
-        const rotateZ = this.time * this.config.rotateSpeed * 0.1;
+        // Gentle rotation for 3D effect
+        const rotateY = this.time * 0.0003;
+        const rotateX = Math.sin(this.time * 0.0002) * 0.3;
         
-        // Mouse influence - responding like a shy animal
-        const mouseInfluence = (this.mouse.x - 0.5) * 0.1;
+        // Smooth mouse influence transition
+        this.mouseInfluence += (this.canvas.matches(':hover') ? 1 : 0 - this.mouseInfluence) * 0.05;
+        const mouseRotate = (this.mouse.x - 0.5) * this.mouseInfluence * 0.3;
         
-        // Draw horizontal contour lines - simplicity over sensation
-        for (let i = 0; i < this.config.numLines; i++) {
-            const v = i / (this.config.numLines - 1);
+        // Update and draw particles
+        this.particles.forEach((particle, index) => {
+            // Flow along the torus surface
+            particle.u += this.config.flowSpeed;
+            particle.v += this.config.flowSpeed * 0.2 * Math.sin(this.time * 0.001 + index);
             
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = `rgba(0, 0, 0, ${this.config.lineAlpha})`;
-            this.ctx.lineWidth = this.config.lineWidth;
+            // Get 3D position on torus
+            const pos = this.torusPoint(particle.u, particle.v, this.time);
             
-            let lastPointVisible = false;
+            // Apply rotation transformations
+            let x = pos.x;
+            let y = pos.y;
+            let z = pos.z;
             
-            for (let j = 0; j <= this.config.lineSegments; j++) {
-                const u = j / this.config.lineSegments;
-                
-                // Get the current transforming form
-                const point = this.getCurrentForm(u, v, this.time);
-                
-                // Apply gentle rotation
-                const rotatedX = point.x * Math.cos(rotateZ + mouseInfluence) - point.y * Math.sin(rotateZ + mouseInfluence);
-                const rotatedY = point.x * Math.sin(rotateZ + mouseInfluence) + point.y * Math.cos(rotateZ + mouseInfluence);
-                const rotatedZ = point.z;
-                
-                // Project to screen with perspective
-                const scale = 1 + rotatedZ * 0.0005;
-                const projX = this.centerX + rotatedX * scale;
-                const projY = this.centerY + rotatedY * scale;
-                
-                // Simple visibility check
-                const pointVisible = rotatedZ > -this.width * 0.3;
-                
-                if (j === 0) {
-                    if (pointVisible) {
-                        this.ctx.moveTo(projX, projY);
-                        lastPointVisible = true;
-                    }
-                } else {
-                    if (pointVisible && lastPointVisible) {
-                        this.ctx.lineTo(projX, projY);
-                    } else if (pointVisible && !lastPointVisible) {
-                        this.ctx.moveTo(projX, projY);
-                    }
-                }
-                
-                lastPointVisible = pointVisible;
+            // Rotate around Y axis
+            const cosY = Math.cos(rotateY + mouseRotate);
+            const sinY = Math.sin(rotateY + mouseRotate);
+            const tempX = x * cosY - z * sinY;
+            z = x * sinY + z * cosY;
+            x = tempX;
+            
+            // Rotate around X axis
+            const cosX = Math.cos(rotateX);
+            const sinX = Math.sin(rotateX);
+            const tempY = y * cosX - z * sinX;
+            z = y * sinX + z * cosX;
+            y = tempY;
+            
+            // Perspective projection
+            const perspective = 1 + z / (this.width * 2);
+            const screenX = this.centerX + x * perspective;
+            const screenY = this.centerY + y * perspective;
+            
+            // Update particle trail (memory of its journey)
+            particle.trail.unshift({ x: screenX, y: screenY, z: z });
+            if (particle.trail.length > this.config.trailLength) {
+                particle.trail.pop();
             }
             
-            this.ctx.stroke();
-        }
-        
-        // Draw fewer vertical lines for depth
-        for (let i = 0; i < this.config.numLines * 0.4; i++) {
-            const u = i / (this.config.numLines * 0.4 - 1);
-            
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = `rgba(0, 0, 0, ${this.config.lineAlpha * 0.6})`;
-            this.ctx.lineWidth = this.config.lineWidth * 0.7;
-            
-            let lastPointVisible = false;
-            
-            for (let j = 0; j <= this.config.lineSegments * 0.6; j++) {
-                const v = j / (this.config.lineSegments * 0.6);
-                
-                const point = this.getCurrentForm(u, v, this.time);
-                
-                const rotatedX = point.x * Math.cos(rotateZ + mouseInfluence) - point.y * Math.sin(rotateZ + mouseInfluence);
-                const rotatedY = point.x * Math.sin(rotateZ + mouseInfluence) + point.y * Math.cos(rotateZ + mouseInfluence);
-                const rotatedZ = point.z;
-                
-                const scale = 1 + rotatedZ * 0.0005;
-                const projX = this.centerX + rotatedX * scale;
-                const projY = this.centerY + rotatedY * scale;
-                
-                const pointVisible = rotatedZ > -this.width * 0.3;
-                
-                if (j === 0) {
-                    if (pointVisible) {
-                        this.ctx.moveTo(projX, projY);
-                        lastPointVisible = true;
+            // Draw trails first (behind particles)
+            if (particle.trail.length > 1) {
+                this.ctx.beginPath();
+                particle.trail.forEach((point, i) => {
+                    if (i === 0) {
+                        this.ctx.moveTo(point.x, point.y);
+                    } else {
+                        this.ctx.lineTo(point.x, point.y);
                     }
-                } else {
-                    if (pointVisible && lastPointVisible) {
-                        this.ctx.lineTo(projX, projY);
-                    } else if (pointVisible && !lastPointVisible) {
-                        this.ctx.moveTo(projX, projY);
-                    }
-                }
+                });
                 
-                lastPointVisible = pointVisible;
+                // Trail fades with distance and time
+                const trailAlpha = this.config.trailAlpha * (1 - z / (this.width * 0.5));
+                this.ctx.strokeStyle = `rgba(0, 0, 0, ${trailAlpha})`;
+                this.ctx.lineWidth = this.config.particleSize * 0.5;
+                this.ctx.stroke();
             }
             
-            this.ctx.stroke();
-        }
+            // Particle life cycle - fading and brightening like distant stars
+            particle.life += 0.01;
+            const lifeCycle = Math.sin(particle.life) * 0.5 + 0.5;
+            
+            // Draw particle
+            const particleAlpha = this.config.particleAlpha * lifeCycle * (1 - z / (this.width * 0.5));
+            this.ctx.fillStyle = `rgba(0, 0, 0, ${particleAlpha})`;
+            this.ctx.beginPath();
+            this.ctx.arc(screenX, screenY, this.config.particleSize * perspective, 0, Math.PI * 2);
+            this.ctx.fill();
+        });
         
-        this.time += 0.3;
+        this.time += 1;
         requestAnimationFrame(() => this.animate());
     }
 }
@@ -413,15 +362,15 @@ document.addEventListener('DOMContentLoaded', () => {
     new BreathingSpace();
     // Removed EphemeralLines - keeping static separator line only
     
-    // Initialize metamorphic forms
+    // Initialize torus flows - particles tracing ancient pathways
     setTimeout(() => {
         const lessCanvas = document.getElementById('wormhole-less');
         const clearCanvas = document.getElementById('wormhole-clear');
         const foreverCanvas = document.getElementById('wormhole-forever');
         
-        if (lessCanvas) new MetamorphicForm(lessCanvas, 'less');
-        if (clearCanvas) new MetamorphicForm(clearCanvas, 'clear');
-        if (foreverCanvas) new MetamorphicForm(foreverCanvas, 'forever');
+        if (lessCanvas) new TorusFlow(lessCanvas, 'less');
+        if (clearCanvas) new TorusFlow(clearCanvas, 'clear');
+        if (foreverCanvas) new TorusFlow(foreverCanvas, 'forever');
     }, 2000); // Start after other animations
     
     let scrollY = 0;
