@@ -124,6 +124,18 @@ body {
     opacity: 1;
 }
 
+.explore-whisper {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--whisper);
+    display: block;
+    margin-top: 1rem;
+    opacity: 0;
+    animation: emerge 2s ease 2s forwards;
+}
+
 .truth {
     text-align: center;
     transform: scale(0.9);
