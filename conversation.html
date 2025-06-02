@@ -27,13 +27,13 @@
             display: flex;
             flex-direction: column;
             gap: 5vh;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
         .asset-row {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 300px 1fr 1fr;
             gap: 3rem;
             align-items: start;
             justify-content: center;
@@ -158,22 +158,27 @@
             width: 80%;
         }
 
+        .prompt-revelation {
+            padding-top: 2rem;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            padding-left: 2rem;
+        }
+
         .hidden-depth {
             opacity: 0;
             max-height: 0;
             overflow: hidden;
             transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-            margin-top: 1rem;
-            font-family: 'EB Garamond', serif;
-            font-size: 0.9rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
             line-height: 1.618;
             color: var(--void);
-            font-style: italic;
+            opacity: 0.7;
         }
 
         .hidden-depth.revealed {
-            opacity: 0.6;
-            max-height: 200px;
+            opacity: 0.7;
+            max-height: 400px;
             transform: translateY(0);
         }
         
@@ -242,9 +247,11 @@
                         <button class="revelation-trigger" onclick="unveilDepth(this, 'claude-depth')">
                             whisper something deeper...
                         </button>
-                        <div class="hidden-depth" id="claude-depth">
-                            You are Claude, a senior web developer specializing in frontend UX's. You are on your way to a meeting with Rick Rubin and Jony Ives to discuss the beauty of simple yet immersive web interfaces, you start talking about how you love the timelessness of monospaced and serifed font but Rick butts in - 3 hours go by and you are walking back home to your apartment, you realize you forgot your notebook... what did you hear, what did you see, what did you three talk about? In HTML, JS, & CSS show me what your meeting was about.
-                        </div>
+                    </div>
+                </div>
+                <div class="prompt-revelation">
+                    <div class="hidden-depth" id="claude-depth">
+                        You are Claude, a senior web developer specializing in frontend UX's. You are on your way to a meeting with Rick Rubin and Jony Ives to discuss the beauty of simple yet immersive web interfaces, you start talking about how you love the timelessness of monospaced and serifed font but Rick butts in - 3 hours go by and you are walking back home to your apartment, you realize you forgot your notebook... what did you hear, what did you see, what did you three talk about? In HTML, JS, & CSS show me what your meeting was about.
                     </div>
                 </div>
             </div>
@@ -265,9 +272,11 @@
                         <button class="revelation-trigger" onclick="unveilDepth(this, 'bridging-depth')">
                             feel the connection...
                         </button>
-                        <div class="hidden-depth" id="bridging-depth">
-                            What is one thing, over the time of your training and out of all of the knowledge you have, what has surprised you the most?
-                        </div>
+                    </div>
+                </div>
+                <div class="prompt-revelation">
+                    <div class="hidden-depth" id="bridging-depth">
+                        What is one thing, over the time of your training and out of all of the knowledge you have, what has surprised you the most?
                     </div>
                 </div>
             </div>
