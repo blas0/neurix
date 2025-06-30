@@ -8,7 +8,14 @@
     "build": "echo 'Static site - no build required'",
     "preview": "python -m http.server 8000"
   },
-  "keywords": ["portfolio", "creative", "minimal"],
+  "keywords": [
+    "portfolio",
+    "creative",
+    "minimal"
+  ],
   "author": "matthew@neurix.co",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "three": "^0.178.0"
+  }
 }

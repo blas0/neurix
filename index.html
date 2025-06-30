@@ -6,6 +6,13 @@
     <title>∞</title>
     <link rel="icon" type="image/svg+xml" href="$1.svg">
     <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.178.0/build/three.module.js"
+        }
+    }
+    </script>
 </head>
 <body>
     <div class="moment">
@@ -13,63 +20,22 @@
             <p class="serif-whisper">What remains when everything unnecessary falls away?</p>
         </div>
         
-        <div class="silence" id="silence-space"></div>
+        <div class="connection-line" id="line-fade"></div>
         
-        <div class="void-passage">
-            <a href="#work-essence" class="void-link">∴</a>
-            <span class="explore-whisper">EXPLORE</span>
+        <div class="connection" id="connection-fade">
+            <a href="mailto:matthew@neurix.co" class="whisper-link" id="email-fade">matthew@neurix.co</a>
+            <a href="conversation.html" class="whisper-link" id="conversation-fade">Conversation</a>
+            <a href="work.html" class="whisper-link" id="work-fade">Work</a>
+            <a href="pricing.html" class="whisper-link" id="value-fade">Value</a>
+            <a href="explore.html" class="whisper-link" id="explore-fade">Explore</a>
         </div>
         
-        <div class="truth" id="truth-reveal">
-            <span class="mono-truth">FORM FOLLOWS FORGETTING</span>
+        <div class="void-passage-divider" id="divider-fade">
+            <div class="connection-line"></div>
         </div>
         
-        <div class="breathing-space" id="parametric-breath"></div>
-        
-        <div class="conversation-fragment">
-            <p class="serif-memory">
-                "The space between notes," Rick said, fingers tracing invisible piano keys.<br>
-                "The uncarved block," Jony replied, holding nothing.<br>
-                "The weight of emptiness," I thought, watching light move.
-            </p>
-        </div>
-        
-        <div class="temporal-mark">
-            <time class="mono-timestamp">THIS MOMENT • NOW • ALWAYS</time>
-        </div>
-        
-        <div class="work-essence" id="work-essence">
-            <div class="work-breath" data-essence="reduction">
-                <div class="wormhole-container">
-                    <canvas class="wormhole-canvas" id="wormhole-less"></canvas>
-                </div>
-                <span class="work-truth">Less</span>
-            </div>
-            <div class="work-breath" data-essence="clarity">
-                <div class="wormhole-container">
-                    <canvas class="wormhole-canvas" id="wormhole-clear"></canvas>
-                </div>
-                <span class="work-truth">Clear</span>
-            </div>
-            <div class="work-breath" data-essence="eternal">
-                <div class="wormhole-container">
-                    <canvas class="wormhole-canvas" id="wormhole-forever"></canvas>
-                </div>
-                <span class="work-truth">Forever</span>
-            </div>
-        </div>
-        
-        <div class="final-thought">
-            <p class="serif-dissolve">
-                Beauty is not added.<br>
-                It is revealed.
-            </p>
-        </div>
-        
-        <div class="connection">
-            <a href="mailto:matthew@neurix.co" class="whisper-link">matthew@neurix.co</a>
-            <a href="conversation.html" class="whisper-link" id="conversation-link">Conversation</a>
-            <a href="pricing.html" class="whisper-link">Value</a>
+        <div class="ascii-emergence" id="ascii-fade">
+            <div class="ascii-container" id="ascii-transform"></div>
         </div>
     </div>
     
@@ -77,6 +43,6 @@
         <div class="golden-grid"></div>
     </div>
     
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

@@ -1,3 +1,6 @@
+
+import ASCIIText from './ASCIIText.js';
+
 class BreathingSpace {
     constructor() {
         this.container = document.getElementById('parametric-breath');
@@ -358,9 +361,123 @@ class TorusFlow {
     }
 }
 
+
+
+
+class ASCIITransform {
+  constructor() {
+    console.log('🚀 ASCIITransform: Starting initialization...');
+    
+    this.container = document.getElementById('ascii-transform');
+    
+    if (!this.container) {
+      console.error('❌ ASCIITransform: Container with ID "ascii-transform" not found!');
+      return;
+    }
+    
+    console.log('✅ ASCIITransform: Container found:', this.container);
+    console.log('📏 ASCIITransform: Container initial bounds:', this.container.getBoundingClientRect());
+
+    // Set container styles for 3D ASCII rendering
+    this.container.style.position = 'relative';
+    this.container.style.width = '100%';
+    this.container.style.height = '200px';
+    this.container.style.minHeight = '200px';
+    console.log('✅ ASCIITransform: Container styles applied');
+    
+    try {
+      // Create ASCII text instance
+      console.log('🔧 ASCIITransform: Creating ASCIIText instance...');
+      this.asciiText = ASCIIText({
+        text: 'neurix',
+        asciiFontSize: 8,
+        textFontSize: 200,
+        textColor: '#fdf9f3',
+        planeBaseHeight: 20,
+        enableWaves: true
+      });
+      console.log('✅ ASCIITransform: ASCIIText instance created successfully');
+    } catch (error) {
+      console.error('💥 ASCIITransform: Error creating ASCIIText:', error);
+      this.asciiText = null;
+    }
+  }
+
+  start() {
+    console.log('🚀 ASCIITransform: Starting animation...');
+    
+    if (!this.asciiText) {
+      console.error('❌ ASCIITransform: No ASCIIText instance to start');
+      return;
+    }
+    
+    if (!this.container) {
+      console.error('❌ ASCIITransform: No container to start animation in');
+      return;
+    }
+    
+    try {
+      this.cleanup = this.asciiText.init(this.container);
+      console.log('✅ ASCIITransform: Animation started successfully');
+    } catch (error) {
+      console.error('💥 ASCIITransform: Error starting animation:', error);
+    }
+  }
+
+  dispose() {
+    console.log('🧹 ASCIITransform: Disposing...');
+    
+    if (this.cleanup) {
+      try {
+        this.cleanup();
+        console.log('✅ ASCIITransform: Cleanup completed');
+      } catch (error) {
+        console.error('💥 ASCIITransform: Error during cleanup:', error);
+      }
+    }
+    
+    if (this.asciiText) {
+      try {
+        this.asciiText.dispose();
+        console.log('✅ ASCIITransform: ASCIIText disposed');
+      } catch (error) {
+        console.error('💥 ASCIITransform: Error disposing ASCIIText:', error);
+      }
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     new BreathingSpace();
     // Removed EphemeralLines - keeping static separator line only
+    
+    // Initialize ASCII transform - starts after navigation links appear
+    setTimeout(() => {
+        console.log('🎆 Starting ASCII animation initialization...');
+        try {
+            const asciiTransform = new ASCIITransform();
+            if (asciiTransform.container && asciiTransform.asciiText) {
+                console.log('🚀 ASCIITransform created successfully, starting animation...');
+                asciiTransform.start();
+            } else {
+                console.error('❌ ASCIITransform: Failed to create properly - missing container or asciiText');
+                // Fallback - show simple text
+                const container = document.getElementById('ascii-transform');
+                if (container) {
+                    container.innerHTML = '<div style="font-family: IBM Plex Mono, monospace; color: #666; text-align: center; padding: 20px; font-size: 16px;">neurix</div>';
+                    console.log('📝 Fallback text displayed');
+                }
+            }
+        } catch (error) {
+            console.error('💥 Error creating ASCII transform:', error);
+            // Fallback - show simple text
+            const container = document.getElementById('ascii-transform');
+            if (container) {
+                container.innerHTML = '<div style="font-family: IBM Plex Mono, monospace; color: #666; text-align: center; padding: 20px; font-size: 16px;">neurix</div>';
+                console.log('📝 Fallback text displayed due to error');
+            }
+        }
+    }, 3000); // Starts after navigation links and divider appear
     
     // Initialize torus flows - particles tracing ancient pathways
     setTimeout(() => {
