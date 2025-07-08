@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Your Free Quote | Neurix Web Development</title>
+    <meta name="description" content="Get a detailed quote for your web development project. Free consultation, fixed pricing, and transparent timeline. Contact us today!">
+    
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="icon" type="image/svg+xml" href="../$1.svg">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+        
+        function trackEvent(eventName, eventParams = {}) {
+            gtag('event', eventName, eventParams);
+        }
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav style="padding: var(--space-lg) 0; border-bottom: 1px solid #f1f5f9;">
+        <div class="container flex justify-between items-center">
+            <a href="services.html" class="text-void" style="text-decoration: none;">
+                <span class="heading-sm">← Back to Services</span>
+            </a>
+            <div class="mono body-sm text-whisper">
+                Step 3 of 3: Get Your Quote
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="section-sm">
+        <div class="container container-xs text-center">
+            <h1 class="heading-xl mb-md">
+                Get Your <span class="text-skyline">Free Quote</span>
+            </h1>
+            <p class="body-lg text-whisper mb-lg">
+                Tell us about your project and we'll provide a detailed quote within 24 hours. 
+                No high-pressure sales, just honest recommendations.
+            </p>
+            <div class="flex justify-center gap-sm mb-xl">
+                <span class="badge">Free Consultation</span>
+                <span class="badge">24-Hour Response</span>
+                <span class="badge">No Obligation</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="section">
+        <div class="container container-xs">
+            <form id="contactForm" class="card" action="#" method="POST">
+                <div class="card-body">
+                    <!-- Contact Information -->
+                    <div class="mb-xl">
+                        <h2 class="heading-md mb-lg">Contact Information</h2>
+                        
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">
+                                Phone Number 
+                                <span class="optional">(optional)</span>
+                            </label>
+                            <input type="tel" id="phone" name="phone" class="form-input">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company" class="form-label">
+                                Company/Business Name 
+                                <span class="optional">(optional)</span>
+                            </label>
+                            <input type="text" id="company" name="company" class="form-input">
+                        </div>
+                    </div>
+
+                    <!-- Project Details -->
+                    <div class="mb-xl">
+                        <h2 class="heading-md mb-lg">Project Details</h2>
+                        
+                        <div class="form-group">
+                            <label for="service" class="form-label">Service Type</label>
+                            <select id="service" name="service" class="form-select" required>
+                                <option value="">Select a service...</option>
+                                <option value="landing">Landing Page ($500-$1,000)</option>
+                                <option value="website">Full Website ($1,000-$2,000)</option>
+                                <option value="ecommerce">E-commerce Store ($4,000-$10,000)</option>
+                                <option value="app">Custom Web Application (Custom Pricing)</option>
+                                <option value="unsure">Not sure - need consultation</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timeline" class="form-label">Preferred Timeline</label>
+                            <select id="timeline" name="timeline" class="form-select" required>
+                                <option value="">When do you need this completed?</option>
+                                <option value="asap">As soon as possible (rush fee may apply)</option>
+                                <option value="2weeks">Within 2 weeks</option>
+                                <option value="month">Within a month</option>
+                                <option value="flexible">I'm flexible</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="budget" class="form-label">
+                                Budget Range 
+                                <span class="optional">(optional but helpful)</span>
+                            </label>
+                            <select id="budget" name="budget" class="form-select">
+                                <option value="">Select budget range...</option>
+                                <option value="500-1000">$500 - $1,000</option>
+                                <option value="1000-2500">$1,000 - $2,500</option>
+                                <option value="2500-5000">$2,500 - $5,000</option>
+                                <option value="5000-10000">$5,000 - $10,000</option>
+                                <option value="10000+">$10,000+</option>
+                                <option value="discuss">Let's discuss</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Project Description -->
+                    <div class="mb-xl">
+                        <h2 class="heading-md mb-lg">Tell Us About Your Project</h2>
+                        
+                        <div class="form-group">
+                            <label for="description" class="form-label">Project Description</label>
+                            <textarea id="description" name="description" class="form-textarea" 
+                                      placeholder="Describe your project, goals, target audience, and any specific features you need. The more details you provide, the more accurate our quote will be."
+                                      required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="inspiration" class="form-label">
+                                Inspiration/Reference Sites 
+                                <span class="optional">(optional)</span>
+                            </label>
+                            <textarea id="inspiration" name="inspiration" class="form-textarea" 
+                                      placeholder="Share any websites you like or that represent the style/functionality you're looking for. Include URLs if possible."
+                                      style="min-height: 80px;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Lead Magnet Offer -->
+                    <div class="mb-xl" style="background: var(--bora); padding: var(--space-lg); border-radius: var(--radius-md);">
+                        <h3 class="heading-sm mb-sm">Free Bonus: AI Prompt Engineering Templates</h3>
+                        <p class="body-md text-whisper mb-md">
+                            Get our exclusive collection of AI prompts for content creation, marketing copy, 
+                            and business automation — valued at $97 — absolutely free with your quote request.
+                        </p>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="flex items-center gap-sm">
+                                <input type="checkbox" id="leadMagnet" name="leadMagnet" value="yes" checked>
+                                <span class="body-md">Yes, send me the free AI templates</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                            Get My Free Quote →
+                        </button>
+                        <p class="body-sm text-whisper mt-md">
+                            We'll respond within 24 hours with a detailed quote and next steps.
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="section-sm bg-bora">
+        <div class="container">
+            <div class="grid grid-3 text-center">
+                <div>
+                    <div class="heading-md text-skyline mb-sm">5-15 min</div>
+                    <p class="body-sm text-whisper">Free consultation call</p>
+                </div>
+                <div>
+                    <div class="heading-md text-skyline mb-sm">24 hours</div>
+                    <p class="body-sm text-whisper">Detailed quote delivery</p>
+                </div>
+                <div>
+                    <div class="heading-md text-skyline mb-sm">2 weeks</div>
+                    <p class="body-sm text-whisper">Typical project completion</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+        <div class="container container-sm">
+            <h2 class="heading-lg text-center mb-xl">What Happens Next?</h2>
+            
+            <div class="grid gap-lg">
+                <div class="flex gap-lg">
+                    <div class="text-skyline heading-lg" style="min-width: 60px;">1</div>
+                    <div>
+                        <h3 class="heading-sm mb-sm">We Review Your Request</h3>
+                        <p class="body-md text-whisper">
+                            Our team analyzes your project requirements and prepares a customized 
+                            solution proposal with transparent pricing.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-lg">
+                    <div class="text-skyline heading-lg" style="min-width: 60px;">2</div>
+                    <div>
+                        <h3 class="heading-sm mb-sm">Quick Consultation Call</h3>
+                        <p class="body-md text-whisper">
+                            We schedule a brief 5-15 minute call to clarify any questions and 
+                            ensure we fully understand your vision and goals.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-lg">
+                    <div class="text-skyline heading-lg" style="min-width: 60px;">3</div>
+                    <div>
+                        <h3 class="heading-sm mb-sm">Detailed Quote & Timeline</h3>
+                        <p class="body-md text-whisper">
+                            You receive a comprehensive quote with fixed pricing, project timeline, 
+                            deliverables, and our recommended approach.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-lg">
+                    <div class="text-skyline heading-lg" style="min-width: 60px;">4</div>
+                    <div>
+                        <h3 class="heading-sm mb-sm">Project Kickoff</h3>
+                        <p class="body-md text-whisper">
+                            If you're happy with the proposal, we start immediately with a 50% deposit. 
+                            No contracts, no hidden fees, just results.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Alternative -->
+    <section class="section bg-skyline">
+        <div class="container text-center">
+            <h2 class="heading-lg mb-md text-breath">Prefer to Talk First?</h2>
+            <p class="body-lg mb-lg text-breath" style="opacity: 0.9;">
+                No problem! Send us a quick email or give us a call to discuss your project.
+            </p>
+            <div class="flex flex-col items-center gap-md">
+                <a href="mailto:matthew@neurix.co" class="body-lg text-breath" style="text-decoration: none;">
+                    📧 matthew@neurix.co
+                </a>
+                <p class="body-sm text-breath" style="opacity: 0.8;">
+                    Based in SW Washington, serving the Pacific Northwest
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Pre-fill form based on URL parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const service = urlParams.get('service');
+            const price = urlParams.get('price');
+            
+            if (service) {
+                document.getElementById('service').value = service;
+                trackEvent('form_prefilled', {
+                    service: service,
+                    price: price
+                });
+            }
+            
+            // Track form view
+            trackEvent('contact_form_view', {
+                referrer: document.referrer,
+                timestamp: new Date().toISOString()
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Track form submission attempt
+            trackEvent('form_submission_attempt', {
+                service: data.service,
+                timeline: data.timeline,
+                budget: data.budget,
+                leadMagnet: data.leadMagnet
+            });
+            
+            // Change button text
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission (replace with actual endpoint)
+            setTimeout(() => {
+                trackEvent('form_submission_success', data);
+                window.location.href = 'thank-you.html';
+            }, 1000);
+        });
+
+        // Form field tracking
+        const formFields = ['name', 'email', 'phone', 'service', 'timeline', 'description'];
+        formFields.forEach(field => {
+            const element = document.getElementById(field);
+            if (element) {
+                element.addEventListener('blur', function() {
+                    if (this.value) {
+                        trackEvent('form_field_completed', {
+                            field: field,
+                            hasValue: !!this.value
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
