@@ -16,6 +16,7 @@
   "author": "matthew@neurix.co",
   "license": "UNLICENSED",
   "dependencies": {
-    "three": "^0.178.0"
+    "three": "^0.178.0",
+    "vercel": "^44.2.13"
   }
 }

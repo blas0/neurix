@@ -21,6 +21,9 @@
             gtag('event', eventName, eventParams);
         }
     </script>
+    
+    <!-- HubSpot Tracking Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/243252967.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -297,6 +300,86 @@
             });
         });
 
+        // HubSpot form submission function
+        function submitToHubSpot(formData) {
+            return fetch('https://api.hsforms.com/submissions/v3/integration/submit/243252967/2nXFFRz5qQZeoDL5DxCIzMw', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fields: [
+                        {
+                            objectTypeId: "0-1",
+                            name: "firstname",
+                            value: formData.name.split(' ')[0] || formData.name
+                        },
+                        {
+                            objectTypeId: "0-1", 
+                            name: "lastname",
+                            value: formData.name.split(' ').slice(1).join(' ') || ''
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "email",
+                            value: formData.email
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "phone",
+                            value: formData.phone || ''
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "company",
+                            value: formData.company || ''
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "service_type",
+                            value: formData.service
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "project_timeline",
+                            value: formData.timeline
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "project_budget",
+                            value: formData.budget
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "message",
+                            value: formData.description || ''
+                        },
+                        {
+                            objectTypeId: "0-1",
+                            name: "lead_magnet_opted_in",
+                            value: formData.leadMagnet === 'yes' ? 'true' : 'false'
+                        }
+                    ],
+                    context: {
+                        pageUri: window.location.href,
+                        pageName: 'Contact Form - Neurix Funnel'
+                    }
+                })
+            });
+        }
+
+        // Service-specific redirect function
+        function getThankYouPage(serviceType) {
+            const redirectMap = {
+                'landing': 'thank-you-landing.html',
+                'website': 'thank-you-website.html', 
+                'ecommerce': 'thank-you-ecommerce.html',
+                'app': 'thank-you-custom.html',
+                'unsure': 'thank-you-consult.html'
+            };
+            return redirectMap[serviceType] || 'thank-you.html';
+        }
+
         // Form submission handling
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -317,11 +400,45 @@
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
             
-            // Simulate form submission (replace with actual endpoint)
-            setTimeout(() => {
-                trackEvent('form_submission_success', data);
-                window.location.href = 'thank-you.html';
-            }, 1000);
+            // Submit to HubSpot
+            submitToHubSpot(data)
+                .then(response => {
+                    if (response.ok) {
+                        // Track successful HubSpot submission
+                        trackEvent('hubspot_submission_success', {
+                            service: data.service,
+                            email: data.email
+                        });
+                        
+                        // Track form submission success
+                        trackEvent('form_submission_success', data);
+                        
+                        // Redirect to service-specific thank you page
+                        const thankYouPage = getThankYouPage(data.service);
+                        window.location.href = thankYouPage;
+                    } else {
+                        throw new Error('HubSpot submission failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error submitting to HubSpot:', error);
+                    
+                    // Track HubSpot submission failure
+                    trackEvent('hubspot_submission_error', {
+                        service: data.service,
+                        error: error.message
+                    });
+                    
+                    // Still redirect to thank you page (graceful fallback)
+                    trackEvent('form_submission_success', data);
+                    const thankYouPage = getThankYouPage(data.service);
+                    window.location.href = thankYouPage;
+                })
+                .finally(() => {
+                    // Reset button state
+                    submitBtn.textContent = 'Get My Free Quote →';
+                    submitBtn.disabled = false;
+                });
         });
 
         // Form field tracking

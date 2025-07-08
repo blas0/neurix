@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Consultation Request | Neurix</title>
+    <meta name="description" content="Thank you for your consultation request! Download your free Business Digital Strategy Assessment while we prepare for your call.">
+    
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="icon" type="image/svg+xml" href="../$1.svg">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+        
+        function trackEvent(eventName, eventParams = {}) {
+            gtag('event', eventName, eventParams);
+        }
+        
+        // Track consultation conversion
+        gtag('event', 'conversion', {
+            send_to: 'GA_MEASUREMENT_ID/CONSULT_CONVERSION_ID',
+            service_type: 'consultation'
+        });
+    </script>
+    
+    <!-- HubSpot Tracking Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/243252967.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <section class="section-sm">
+        <div class="container container-xs text-center">
+            <div class="animate-fade-in-up">
+                <div class="mb-lg">
+                    <div style="font-size: 4rem; margin-bottom: var(--space-md);">💡</div>
+                </div>
+                
+                <h1 class="heading-xl mb-md">
+                    <span class="text-bright-pink">Your Consultation</span> is Scheduled!
+                </h1>
+                
+                <p class="body-lg text-whisper mb-lg">
+                    We're excited to help clarify your digital strategy needs. Your personalized 
+                    consultation will help us recommend the perfect solution for your business.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Next Steps -->
+    <section class="section-sm">
+        <div class="container container-sm">
+            <h2 class="heading-lg text-center mb-xl">What Happens Next</h2>
+            
+            <div class="grid grid-3 stagger">
+                <div class="text-center">
+                    <div class="mb-md">
+                        <span class="text-bright-pink">📧</span>
+                    </div>
+                    <h3 class="heading-sm mb-sm">Instant Confirmation</h3>
+                    <p class="body-md text-whisper">You'll receive email confirmation with your consultation request details within 5 minutes.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="mb-md">
+                        <span class="text-bright-pink">📅</span>
+                    </div>
+                    <h3 class="heading-sm mb-sm">Schedule Your Call</h3>
+                    <p class="body-md text-whisper">We'll send you a calendar link to book your 30-minute strategy consultation at your convenience.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="mb-md">
+                        <span class="text-bright-pink">🎯</span>
+                    </div>
+                    <h3 class="heading-sm mb-sm">Strategic Recommendations</h3>
+                    <p class="body-md text-whisper">After our call, receive a custom digital strategy recommendation with next steps and pricing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Free Lead Magnet -->
+    <section class="section bg-cornsilk">
+        <div class="container container-sm">
+            <div class="text-center mb-xl">
+                <h2 class="heading-lg mb-md">Free Bonus: Business Digital Strategy Assessment</h2>
+                <p class="body-lg text-whisper">
+                    While you wait for your consultation, download our strategic assessment tool that's helped 
+                    200+ businesses identify their highest-impact digital opportunities.
+                </p>
+            </div>
+            
+            <div class="card highlight">
+                <div class="card-body text-center">
+                    <div class="mb-lg">
+                        <div style="font-size: 3rem; margin-bottom: var(--space-md);">📊</div>
+                        <h3 class="heading-md mb-sm">Complete Digital Strategy Assessment</h3>
+                        <p class="body-md text-whisper mb-md">
+                            The same assessment framework we use with our consultation clients to identify 
+                            gaps and opportunities in their digital presence and operations.
+                        </p>
+                        
+                        <div class="heading-sm text-bright-pink mb-sm">Assessment Areas:</div>
+                        <div class="space-y-sm text-left" style="max-width: 400px; margin: 0 auto;">
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Current digital presence audit</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Competitor analysis framework</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Technology gap identification</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">ROI opportunity mapping</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Priority action planning</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Budget allocation recommendations</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="mb-sm">
+                            <span style="text-decoration: line-through; color: var(--whisper);">$147 Value</span>
+                            <span class="heading-md text-bright-pink ml-sm">FREE</span>
+                        </div>
+                        <a href="#" class="btn btn-primary btn-lg" onclick="trackEvent('lead_magnet_download', {service: 'consult', magnet: 'strategy_assessment'})">
+                            Download Free Assessment →
+                        </a>
+                        <p class="body-sm text-whisper mt-sm">Instant download • No spam, ever</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upsell Section -->
+    <section class="section">
+        <div class="container container-sm">
+            <div class="text-center mb-xl">
+                <h2 class="heading-lg mb-md">Accelerate Your Digital Transformation</h2>
+                <p class="body-lg text-whisper">
+                    Since you're looking for strategic guidance, here's how to implement 
+                    your digital strategy with confidence and speed...
+                </p>
+            </div>
+            
+            <div class="card highlight">
+                <div class="card-header">
+                    <h3 class="heading-md mb-sm">🚀 Business Automation Consultation</h3>
+                    <p class="body-md text-whisper">
+                        Go beyond just a website with our comprehensive business automation assessment. 
+                        Discover AI and automation opportunities that could save 10+ hours per week.
+                    </p>
+                </div>
+                <div class="card-body">
+                    <div class="mb-lg">
+                        <div class="heading-sm text-bright-pink mb-sm">90-Minute Deep Dive Includes:</div>
+                        <div class="space-y-sm">
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Complete business process audit</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">AI automation opportunity identification</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Workflow optimization recommendations</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Technology integration planning</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">ROI projections for each opportunity</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Implementation roadmap & timeline</span>
+                            </div>
+                            <div class="flex gap-sm">
+                                <span class="text-bright-pink">✓</span>
+                                <span class="body-md">Follow-up implementation support</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="mb-sm">
+                            <span style="text-decoration: line-through; color: var(--whisper);">$397 Regular Price</span>
+                            <span class="heading-md text-bright-pink ml-sm">$147</span>
+                        </div>
+                        <p class="body-sm text-whisper mb-lg">Special pricing for consultation clients</p>
+                        <a href="contact.html?service=automation-consult&price=147&source=consult-upsell" 
+                           class="btn btn-secondary btn-lg" 
+                           onclick="trackEvent('upsell_click', {service: 'consult', offer: 'automation_consult', price: '147'})">
+                            Add Automation Consultation →
+                        </a>
+                        <p class="body-sm text-whisper mt-sm">Can be scheduled after your initial consultation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: var(--space-md) 0; border-top: 1px solid #f1f5f9;">
+        <div class="container text-center">
+            <p class="mono body-sm text-whisper">
+                Powered by <a href="https://www.neurix.co/funnel/contact?service=website&price=1000-2000" class="text-bright-pink" style="text-decoration: none;">Neurix</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- HubSpot tracking -->
+    <script>
+        // Track page view with service context
+        document.addEventListener('DOMContentLoaded', function() {
+            trackEvent('thank_you_page_view', {
+                service_type: 'consult',
+                page: 'thank-you-consult'
+            });
+        });
+    </script>
+</body>
+</html>
