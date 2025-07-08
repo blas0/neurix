@@ -27,6 +27,11 @@
       "source": "/.claude/(.*)",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/funnel",
+      "destination": "/funnel/landing",
+      "permanent": false
     }
   ]
 }
