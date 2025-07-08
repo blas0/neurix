@@ -255,6 +255,9 @@ body {
   box-shadow: var(--shadow-md);
   overflow: hidden;
   transition: all var(--transition-normal);
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -265,16 +268,42 @@ body {
 .card-header {
   padding: var(--space-lg);
   border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
 }
 
 .card-body {
   padding: var(--space-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-footer {
   padding: var(--space-lg);
   border-top: 1px solid #f1f5f9;
   background: #fafbfc;
+  flex-shrink: 0;
+}
+
+/* Service Card Pricing Header */
+.service-pricing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.service-pricing-info {
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 140px;
+}
+
+.service-title {
+  flex: 1;
+  min-width: 200px;
 }
 
 /* ===== LAYOUT SYSTEM ===== */
@@ -307,11 +336,24 @@ body {
 }
 
 .grid-2 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 
 .grid-3 {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Services Page Specific Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* FAQ Spacing */
+.space-y-lg > * + * {
+  margin-top: var(--space-lg);
 }
 
 /* Flex Utilities */
@@ -367,6 +409,22 @@ body {
 .mt-xl { margin-top: var(--space-xl); }
 
 /* ===== RESPONSIVE DESIGN ===== */
+@media (min-width: 1024px) {
+  /* Desktop optimizations */
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xxl);
+  }
+  
+  .service-pricing-header {
+    flex-wrap: nowrap;
+  }
+  
+  .space-y-lg > * + * {
+    margin-top: var(--space-xl);
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --space-xs: 0.25rem;
@@ -387,8 +445,19 @@ body {
   }
   
   .grid-2,
-  .grid-3 {
+  .grid-3,
+  .services-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .service-pricing-header {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  
+  .service-pricing-info {
+    text-align: left;
+    min-width: auto;
   }
 }
 
