@@ -1,25 +1,26 @@
 /* =====================================================
    NEURIX BUSINESS FUNNEL DESIGN SYSTEM
    Version: 1.0
-   Colors: Bora (#EAECC6) & Skyline (#2BC0E4)
+   Colors: Bright Pink (#F7567C), Cornsilk (#FFFAE3), Eggshell (#FCFCFC)
    UX Laws: Hick's, Miller's, Fitts's, Jakob's, etc.
    ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 /* ===== CSS CUSTOM PROPERTIES ===== */
 :root {
   /* Brand Colors */
-  --bora: #EAECC6;
-  --skyline: #2BC0E4;
+  --cornsilk: #FFFAE3;
+  --bright-pink: #F7567C;
+  --eggshell: #FCFCFC;
   --void: #000000;
   --breath: #ffffff;
   --whisper: #666666;
-  --shadow: rgba(43, 192, 228, 0.1);
+  --shadow: rgba(247, 86, 124, 0.1);
   
   /* Typography */
-  --serif: 'EB Garamond', serif;
-  --mono: 'JetBrains Mono', monospace;
+  --mono: 'Space Mono', monospace;
+  --serif: 'Space Mono', monospace;
   
   /* Golden Ratio & Spacing */
   --golden: 1.618;
@@ -63,10 +64,10 @@ html {
 }
 
 body {
-  font-family: var(--serif);
+  font-family: var(--mono);
   line-height: var(--golden);
   color: var(--void);
-  background: var(--breath);
+  background: var(--eggshell);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -126,7 +127,7 @@ body {
   justify-content: center;
   min-height: var(--touch-target);
   padding: var(--space-sm) var(--space-lg);
-  font-family: var(--serif);
+  font-family: var(--mono);
   font-size: 1rem;
   font-weight: 500;
   text-decoration: none;
@@ -141,19 +142,19 @@ body {
 }
 
 .btn:focus {
-  outline: 2px solid var(--skyline);
+  outline: 2px solid var(--bright-pink);
   outline-offset: 2px;
 }
 
-/* Primary Button (Skyline) */
+/* Primary Button (Bright Pink) */
 .btn-primary {
-  background: var(--skyline);
+  background: var(--bright-pink);
   color: var(--breath);
   box-shadow: var(--shadow-md);
 }
 
 .btn-primary:hover {
-  background: color-mix(in srgb, var(--skyline) 90%, var(--void));
+  background: color-mix(in srgb, var(--bright-pink) 90%, var(--void));
   transform: translateY(-1px);
   box-shadow: var(--shadow-lg);
 }
@@ -163,15 +164,15 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-/* Secondary Button (Bora) */
+/* Secondary Button (Cornsilk) */
 .btn-secondary {
-  background: var(--bora);
+  background: var(--cornsilk);
   color: var(--void);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
-  background: color-mix(in srgb, var(--bora) 85%, var(--void));
+  background: color-mix(in srgb, var(--cornsilk) 85%, var(--void));
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -180,11 +181,11 @@ body {
 .btn-outline {
   background: transparent;
   color: var(--void);
-  border: 2px solid var(--skyline);
+  border: 2px solid var(--bright-pink);
 }
 
 .btn-outline:hover {
-  background: var(--skyline);
+  background: var(--bright-pink);
   color: var(--breath);
 }
 
@@ -225,7 +226,7 @@ body {
   width: 100%;
   min-height: var(--touch-target);
   padding: var(--space-sm) var(--space-md);
-  font-family: var(--serif);
+  font-family: var(--mono);
   font-size: 1rem;
   color: var(--void);
   background: var(--breath);
@@ -238,8 +239,8 @@ body {
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: var(--skyline);
-  box-shadow: 0 0 0 3px rgba(43, 192, 228, 0.1);
+  border-color: var(--bright-pink);
+  box-shadow: 0 0 0 3px rgba(247, 86, 124, 0.1);
 }
 
 .form-textarea {
@@ -343,13 +344,14 @@ body {
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 
-.text-bora { color: var(--bora); }
-.text-skyline { color: var(--skyline); }
+.text-cornsilk { color: var(--cornsilk); }
+.text-bright-pink { color: var(--bright-pink); }
 .text-void { color: var(--void); }
 .text-whisper { color: var(--whisper); }
 
-.bg-bora { background-color: var(--bora); }
-.bg-skyline { background-color: var(--skyline); }
+.bg-cornsilk { background-color: var(--cornsilk); }
+.bg-bright-pink { background-color: var(--bright-pink); }
+.bg-eggshell { background-color: var(--eggshell); }
 .bg-breath { background-color: var(--breath); }
 
 .mb-xs { margin-bottom: var(--space-xs); }
@@ -411,7 +413,7 @@ body {
   left: -4px;
   right: -4px;
   bottom: -4px;
-  background: linear-gradient(135deg, var(--skyline), var(--bora));
+  background: linear-gradient(135deg, var(--bright-pink), var(--cornsilk));
   border-radius: inherit;
   z-index: -1;
   opacity: 0.1;
@@ -423,7 +425,7 @@ body {
   padding: var(--space-xs) var(--space-sm);
   font-size: 0.75rem;
   font-weight: 500;
-  background: var(--skyline);
+  background: var(--bright-pink);
   color: var(--breath);
   border-radius: var(--radius-pill);
   text-transform: uppercase;
