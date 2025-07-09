@@ -5,7 +5,7 @@
    UX Laws: Hick's, Miller's, Fitts's, Jakob's, etc.
    ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=optional');
 
 /* ===== CSS CUSTOM PROPERTIES ===== */
 :root {
@@ -18,9 +18,9 @@
   --whisper: #666666;
   --shadow: rgba(247, 86, 124, 0.1);
   
-  /* Typography */
-  --mono: 'Space Mono', monospace;
-  --serif: 'Space Mono', monospace;
+  /* Typography with matching fallbacks to prevent layout shifts */
+  --mono: 'Space Mono', 'Courier New', 'Liberation Mono', 'Menlo', 'Consolas', monospace;
+  --serif: 'Space Mono', 'Courier New', 'Liberation Mono', 'Menlo', 'Consolas', monospace;
   
   /* Golden Ratio & Spacing */
   --golden: 1.618;
@@ -258,10 +258,10 @@ body {
   height: auto;
   display: flex;
   flex-direction: column;
+  contain: layout style;
 }
 
 .card:hover {
-  transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -333,6 +333,7 @@ body {
 .grid {
   display: grid;
   gap: var(--space-lg);
+  contain: layout style;
 }
 
 .grid-2 {
@@ -349,6 +350,7 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: var(--space-xl);
   align-items: start;
+  contain: layout style;
 }
 
 /* FAQ Spacing */
@@ -505,11 +507,9 @@ body {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

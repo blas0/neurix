@@ -44,6 +44,7 @@ class FunnelAnalytics {
         this.setupClickTracking();
         this.setupFormTracking();
         this.setupTimeTracking();
+        this.setupLayoutShiftTracking();
         this.trackPageView();
     }
     
@@ -393,6 +394,67 @@ class FunnelAnalytics {
                 page_path: window.location.pathname
             });
         });
+    }
+    
+    // Layout Shift Tracking (CLS monitoring)
+    setupLayoutShiftTracking() {
+        if ('PerformanceObserver' in window) {
+            try {
+                let cumulativeLayoutShift = 0;
+                
+                const observer = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        // Only count layout shifts without recent user input
+                        if (!entry.hadRecentInput) {
+                            cumulativeLayoutShift += entry.value;
+                            
+                            // Track significant layout shifts
+                            if (entry.value > 0.1) {
+                                this.sendEvent('layout_shift_detected', {
+                                    shift_value: entry.value,
+                                    cumulative_score: cumulativeLayoutShift,
+                                    sources: entry.sources?.map(source => ({
+                                        node: source.node?.tagName || 'unknown',
+                                        previous_rect: {
+                                            width: source.previousRect?.width,
+                                            height: source.previousRect?.height
+                                        },
+                                        current_rect: {
+                                            width: source.currentRect?.width,
+                                            height: source.currentRect?.height
+                                        }
+                                    })) || [],
+                                    page_path: window.location.pathname,
+                                    timestamp: entry.startTime
+                                });
+                            }
+                        }
+                    }
+                    
+                    // Track overall CLS score periodically
+                    if (cumulativeLayoutShift > 0) {
+                        this.sendEvent('cumulative_layout_shift', {
+                            cls_score: cumulativeLayoutShift,
+                            page_path: window.location.pathname
+                        });
+                    }
+                });
+                
+                observer.observe({ type: 'layout-shift', buffered: true });
+                
+                // Send final CLS score before page unload
+                window.addEventListener('beforeunload', () => {
+                    this.sendEvent('final_cls_score', {
+                        final_cls: cumulativeLayoutShift,
+                        page_path: window.location.pathname,
+                        session_duration: Date.now() - this.startTime
+                    });
+                });
+                
+            } catch (error) {
+                console.warn('Layout shift tracking not supported:', error);
+            }
+        }
     }
     
     // Send events to analytics

@@ -6,6 +6,9 @@
     <title>Get Your Free Quote | Neurix Web Development</title>
     <meta name="description" content="Get a detailed quote for your web development project. Free consultation, fixed pricing, and transparent timeline. Contact us today!">
     
+    <!-- Preload critical fonts to prevent layout shifts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=optional" as="style">
+    
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="icon" type="image/svg+xml" href="../$1.svg">
     
@@ -22,8 +25,23 @@
         }
     </script>
     
-    <!-- HubSpot Tracking Code -->
-    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/243252967.js"></script>
+    <!-- HubSpot Tracking Code - Required for HUTK token generation -->
+    <script>
+        // Load HubSpot tracking script dynamically to avoid MIME type issues
+        (function() {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.async = true;
+            script.defer = true;
+            script.src = '//js.hs-scripts.com/243252967.js';
+            script.onerror = function() {
+                console.warn('HubSpot tracking script failed to load, continuing without HUTK token');
+            };
+            var firstScript = document.getElementsByTagName('script')[0];
+            firstScript.parentNode.insertBefore(script, firstScript);
+        })();
+    </script>
+    
 </head>
 <body>
     <!-- Navigation -->
@@ -59,8 +77,9 @@
     <!-- Contact Form Section -->
     <section class="section">
         <div class="container container-xs">
-            <form id="contactForm" class="card" action="#" method="POST">
+            <div class="card">
                 <div class="card-body">
+                    <form id="neurix_receive_form">
                     <!-- Contact Information -->
                     <div class="mb-xl">
                         <h2 class="heading-md mb-lg">Contact Information</h2>
@@ -167,7 +186,7 @@
                         </p>
                         <div class="form-group" style="margin-bottom: 0;">
                             <label class="flex items-center gap-sm">
-                                <input type="checkbox" id="leadMagnet" name="leadMagnet" value="yes" checked>
+                                <input type="checkbox" id="ai_template_opt" name="ai_template_opt" value="yes" checked>
                                 <span class="body-md">Yes, send me the free AI templates</span>
                             </label>
                         </div>
@@ -175,6 +194,11 @@
 
                     <!-- Submit Button -->
                     <div class="text-center">
+                        <div class="mb-md" style="background: #fff3cd; padding: var(--space-sm); border-radius: var(--radius-sm); border: 1px solid #ffeaa7;">
+                            <p class="body-sm" style="color: #856404; margin: 0;">
+                                🔧 <strong>Debug Mode Active:</strong> Form will only submit name and email for testing.
+                            </p>
+                        </div>
                         <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
                             Get My Free Quote →
                         </button>
@@ -182,8 +206,8 @@
                             We'll respond within 24 hours with a detailed quote and next steps.
                         </p>
                     </div>
+                    </form>
                 </div>
-            </form>
         </div>
     </section>
 
@@ -279,96 +303,124 @@
     </section>
 
     <script>
-        // Pre-fill form based on URL parameters
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const service = urlParams.get('service');
-            const price = urlParams.get('price');
+        // MCP-enhanced client onboarding trigger
+        function triggerMCPOnboarding(formData) {
+            console.log('🚀 Triggering MCP-enhanced client onboarding for:', formData.name);
             
-            if (service) {
-                document.getElementById('service').value = service;
-                trackEvent('form_prefilled', {
-                    service: service,
-                    price: price
-                });
-            }
-            
-            // Track form view
-            trackEvent('contact_form_view', {
-                referrer: document.referrer,
+            // Track MCP onboarding initiation
+            trackEvent('mcp_onboarding_triggered', {
+                client_name: formData.name,
+                service_type: formData.service,
+                industry: inferIndustry(formData.description, formData.company),
+                ai_template_opt: formData.ai_template_opt,
                 timestamp: new Date().toISOString()
             });
-        });
-
-        // HubSpot form submission function
-        function submitToHubSpot(formData) {
-            return fetch('https://api.hsforms.com/submissions/v3/integration/submit/243252967/2nXFFRz5qQZeoDL5DxCIzMw', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fields: [
-                        {
-                            objectTypeId: "0-1",
-                            name: "firstname",
-                            value: formData.name.split(' ')[0] || formData.name
-                        },
-                        {
-                            objectTypeId: "0-1", 
-                            name: "lastname",
-                            value: formData.name.split(' ').slice(1).join(' ') || ''
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "email",
-                            value: formData.email
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "phone",
-                            value: formData.phone || ''
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "company",
-                            value: formData.company || ''
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "service_type",
-                            value: formData.service
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "project_timeline",
-                            value: formData.timeline
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "project_budget",
-                            value: formData.budget
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "message",
-                            value: formData.description || ''
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "lead_magnet_opted_in",
-                            value: formData.leadMagnet === 'yes' ? 'true' : 'false'
-                        }
-                    ],
-                    context: {
-                        pageUri: window.location.href,
-                        pageName: 'Contact Form - Neurix Funnel'
-                    }
-                })
+            
+            // Generate client research context data
+            const clientContext = {
+                projectId: generateProjectId(formData),
+                clientName: formData.company || formData.name,
+                serviceType: formData.service,
+                industry: inferIndustry(formData.description, formData.company),
+                submissionDate: new Date().toISOString(),
+                researchPriority: determineResearchPriority(formData.service),
+                mcpTasksGenerated: true
+            };
+            
+            // Store context for backend processing
+            localStorage.setItem('pending_mcp_research', JSON.stringify(clientContext));
+            
+            // Track successful context generation
+            trackEvent('mcp_context_generated', {
+                project_id: clientContext.projectId,
+                research_priority: clientContext.researchPriority,
+                client_type: formData.service
             });
+            
+            console.log('✅ MCP research context generated:', clientContext.projectId);
+        }
+        
+        // Helper function to infer industry from description
+        function inferIndustry(description, company) {
+            const text = `${description || ''} ${company || ''}`.toLowerCase();
+            const industryMap = {
+                'technology': ['tech', 'software', 'app', 'digital', 'development', 'ai', 'saas'],
+                'healthcare': ['health', 'medical', 'clinic', 'hospital', 'wellness', 'care'],
+                'finance': ['finance', 'bank', 'investment', 'insurance', 'fintech', 'money'],
+                'retail': ['retail', 'store', 'shop', 'ecommerce', 'product', 'sales'],
+                'consulting': ['consulting', 'advisory', 'strategy', 'business', 'services'],
+                'education': ['education', 'school', 'university', 'learning', 'course', 'training'],
+                'real-estate': ['real estate', 'property', 'realtor', 'housing', 'homes'],
+                'manufacturing': ['manufacturing', 'factory', 'production', 'industrial', 'supply']
+            };
+            
+            for (const [industry, keywords] of Object.entries(industryMap)) {
+                if (keywords.some(keyword => text.includes(keyword))) {
+                    return industry;
+                }
+            }
+            return 'general-business';
+        }
+        
+        // Generate unique project ID
+        function generateProjectId(formData) {
+            const clientName = (formData.company || formData.name)
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+            const timestamp = Date.now();
+            return `${clientName}-${timestamp}`;
+        }
+        
+        // Determine research priority based on service type
+        function determineResearchPriority(serviceType) {
+            const priorityMap = {
+                'app': 'high',        // Custom apps need extensive research
+                'ecommerce': 'high',  // E-commerce requires market analysis
+                'website': 'medium',  // Standard websites need moderate research
+                'landing': 'medium',  // Landing pages need conversion research
+                'unsure': 'low'       // Consultation clients get basic research
+            };
+            return priorityMap[serviceType] || 'medium';
         }
 
-        // Service-specific redirect function
+        // HubSpot token extraction function
+        function getHubSpotToken() {
+            // Try multiple methods to get the HubSpot tracking token
+            let hutk = '';
+            
+            // Method 1: From cookie
+            const cookieMatch = document.cookie.match(/hubspotutk=([^;]*)/);
+            if (cookieMatch) {
+                hutk = cookieMatch[1];
+                console.log('✅ HUTK token found in cookie:', hutk);
+            }
+            
+            // Method 2: From HubSpot global object (if available)
+            if (!hutk && window._hsq) {
+                try {
+                    hutk = window._hsq.push(['getUtk']) || '';
+                    console.log('✅ HUTK token from _hsq:', hutk);
+                } catch (e) {
+                    console.warn('Could not get HUTK from _hsq:', e);
+                }
+            }
+            
+            // Method 3: From localStorage backup
+            if (!hutk) {
+                hutk = localStorage.getItem('hubspot_utk') || '';
+                if (hutk) console.log('✅ HUTK token from localStorage:', hutk);
+            }
+            
+            if (!hutk) {
+                console.warn('⚠️ No HUTK token found - submissions may be rejected');
+            }
+            
+            return hutk;
+        }
+
+        // Service-specific redirect function (global scope)
         function getThankYouPage(serviceType) {
             const redirectMap = {
                 'landing': 'thank-you-landing.html',
@@ -377,85 +429,376 @@
                 'app': 'thank-you-custom.html',
                 'unsure': 'thank-you-consult.html'
             };
-            return redirectMap[serviceType] || 'thank-you.html';
+            return redirectMap[serviceType] || 'thank-you-consult.html';
         }
 
-        // Form submission handling
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Handle form initialization and URL parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const service = urlParams.get('service');
+            const price = urlParams.get('price');
             
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Track form submission attempt
-            trackEvent('form_submission_attempt', {
-                service: data.service,
-                timeline: data.timeline,
-                budget: data.budget,
-                leadMagnet: data.leadMagnet
+            // Track form view
+            trackEvent('contact_form_view', {
+                referrer: document.referrer,
+                timestamp: new Date().toISOString(),
+                service: service,
+                price: price
             });
             
-            // Change button text
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // Submit to HubSpot
-            submitToHubSpot(data)
-                .then(response => {
-                    if (response.ok) {
+            // Pre-fill service field if provided in URL
+            if (service) {
+                const serviceSelect = document.getElementById('service');
+                if (serviceSelect) {
+                    serviceSelect.value = service;
+                    trackEvent('form_prefilled', {
+                        service: service,
+                        price: price
+                    });
+                }
+            }
+
+            // Form submission handling
+            document.getElementById('neurix_receive_form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                
+                // Track form submission attempt
+                trackEvent('form_submission_attempt', {
+                    service: data.service,
+                    timeline: data.timeline,
+                    budget: data.budget,
+                    ai_template_opt: data.ai_template_opt
+                });
+                
+                // Change button text
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+                
+                // Submit to HubSpot
+                submitToHubSpot(data)
+                    .then(response => {
+                        console.log('🌐 HubSpot API Response Status:', response.status, response.statusText);
+                        console.log('🌐 Response Headers:', [...response.headers.entries()]);
+                        
+                        if (response.ok) {
+                            return response.json().then(data => {
+                                console.log('✅ HubSpot Success Response:', data);
+                                return data;
+                            });
+                        } else {
+                            return response.text().then(errorText => {
+                                console.error('❌ HubSpot Error Response (Raw):', errorText);
+                                try {
+                                    const errorData = JSON.parse(errorText);
+                                    console.error('❌ HubSpot Error Response (Parsed):', errorData);
+                                    throw new Error(`HubSpot API Error ${response.status}: ${errorData.message || errorText}`);
+                                } catch (parseError) {
+                                    throw new Error(`HubSpot API Error ${response.status}: ${errorText}`);
+                                }
+                            });
+                        }
+                    })
+                    .then(responseData => {
+                        console.log('HubSpot submission successful:', responseData);
+                        
                         // Track successful HubSpot submission
                         trackEvent('hubspot_submission_success', {
                             service: data.service,
-                            email: data.email
+                            email: data.email,
+                            contactId: responseData.inlineMessage || 'unknown'
                         });
                         
                         // Track form submission success
                         trackEvent('form_submission_success', data);
                         
+                        // Trigger MCP-enhanced client onboarding if AI templates opted in
+                        if (data.ai_template_opt === 'yes') {
+                            triggerMCPOnboarding(data);
+                        }
+                        
                         // Redirect to service-specific thank you page
                         const thankYouPage = getThankYouPage(data.service);
                         window.location.href = thankYouPage;
-                    } else {
-                        throw new Error('HubSpot submission failed');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error submitting to HubSpot:', error);
-                    
-                    // Track HubSpot submission failure
-                    trackEvent('hubspot_submission_error', {
-                        service: data.service,
-                        error: error.message
+                    })
+                    .catch(error => {
+                        console.error('Error submitting to HubSpot:', error);
+                        
+                        // Parse error details if available
+                        let errorDetails = error.message;
+                        let hubspotError = null;
+                        try {
+                            const errorObj = JSON.parse(error.message.replace('HubSpot submission failed: ', ''));
+                            errorDetails = errorObj.message || errorObj.errors?.[0]?.message || error.message;
+                            hubspotError = errorObj;
+                            console.error('Detailed HubSpot error:', errorObj);
+                        } catch (e) {
+                            // Keep original error message if JSON parsing fails
+                        }
+                        
+                        // Track HubSpot submission failure with detailed error
+                        trackEvent('hubspot_submission_error', {
+                            service: data.service,
+                            error: errorDetails,
+                            fullError: error.message,
+                            hubspotError: hubspotError
+                        });
+                        
+                        // Show detailed error in console for debugging
+                        console.group('HubSpot Submission Error Details');
+                        console.log('Error message:', errorDetails);
+                        console.log('Form data sent:', data);
+                        console.log('Full error object:', hubspotError);
+                        console.groupEnd();
+                        
+                        // Show user-friendly error message but still proceed
+                        console.warn('HubSpot submission failed, but proceeding with user flow. Error:', errorDetails);
+                        
+                        // Still redirect to thank you page (graceful fallback)
+                        trackEvent('form_submission_success', data);
+                        const thankYouPage = getThankYouPage(data.service);
+                        window.location.href = thankYouPage;
+                    })
+                    .finally(() => {
+                        // Reset button state
+                        submitBtn.textContent = 'Get My Free Quote →';
+                        submitBtn.disabled = false;
                     });
-                    
-                    // Still redirect to thank you page (graceful fallback)
-                    trackEvent('form_submission_success', data);
-                    const thankYouPage = getThankYouPage(data.service);
-                    window.location.href = thankYouPage;
-                })
-                .finally(() => {
-                    // Reset button state
-                    submitBtn.textContent = 'Get My Free Quote →';
-                    submitBtn.disabled = false;
-                });
+            });
+
+            // Form field tracking
+            const formFields = ['name', 'email', 'phone', 'service', 'timeline', 'description'];
+            formFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element) {
+                    element.addEventListener('blur', function() {
+                        if (this.value) {
+                            trackEvent('form_field_completed', {
+                                field: field,
+                                hasValue: !!this.value
+                            });
+                        }
+                    });
+                }
+            });
         });
 
-        // Form field tracking
-        const formFields = ['name', 'email', 'phone', 'service', 'timeline', 'description'];
-        formFields.forEach(field => {
-            const element = document.getElementById(field);
-            if (element) {
-                element.addEventListener('blur', function() {
-                    if (this.value) {
-                        trackEvent('form_field_completed', {
-                            field: field,
-                            hasValue: !!this.value
+        // HubSpot form submission function
+        function submitToHubSpot(formData) {
+            // Prepare fields with proper data types and error handling
+            const fields = [];
+            
+            // DEBUG: Test mode - only send minimal required fields
+            const DEBUG_MODE = true; // Set to false for full submission
+            
+            // Value mappings (needed for debug logging even in debug mode)
+            const serviceMapping = {
+                'landing': 'Landing Page ($500-$1,000)',
+                'website': 'Full Website ($1,000-$2,000)', 
+                'ecommerce': 'E-commerce Store ($4,000-$10,000)',
+                'app': 'Custom Web Application (Custom Pricing)',
+                'unsure': 'Not sure - need consultation'
+            };
+            
+            const budgetMapping = {
+                '500-1000': '$500-$1,000',
+                '1000-2500': '$1,000-$2,500',
+                '2500-5000': '$2,500-$5,000', 
+                '5000-10000': '$5,000-$10,000',
+                '10000+': '$10,000+',
+                'discuss': 'Let\'s discuss'
+            };
+            
+            const timelineMapping = {
+                'asap': 'As soon as possible (rush fee may apply)',
+                '2weeks': 'Within 2 weeks',
+                'month': 'Within a month',
+                'flexible': 'I\'m flexible'
+            };
+            
+            if (DEBUG_MODE) {
+                console.log('🔧 DEBUG MODE: Sending only minimal required fields');
+                
+                // Only send required fields for testing
+                if (formData.name) {
+                    const nameParts = formData.name.trim().split(' ');
+                    fields.push({
+                        objectTypeId: "0-1",
+                        name: "firstname",
+                        value: nameParts[0] || ''
+                    });
+                    if (nameParts.length > 1) {
+                        fields.push({
+                            objectTypeId: "0-1", 
+                            name: "lastname",
+                            value: nameParts.slice(1).join(' ')
                         });
                     }
+                }
+                
+                if (formData.email) {
+                    fields.push({
+                        objectTypeId: "0-1",
+                        name: "email",
+                        value: formData.email
+                    });
+                }
+                
+                console.log('🔧 DEBUG: Minimal fields only:', fields);
+                
+            } else {
+                console.log('🚀 FULL MODE: Sending all form fields');
+            
+            // Standard contact fields (always present in HubSpot)
+            if (formData.name) {
+                const nameParts = formData.name.trim().split(' ');
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "firstname",
+                    value: nameParts[0] || ''
+                });
+                if (nameParts.length > 1) {
+                    fields.push({
+                        objectTypeId: "0-1", 
+                        name: "lastname",
+                        value: nameParts.slice(1).join(' ')
+                    });
+                }
+            }
+            
+            // Required email field
+            if (formData.email) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "email",
+                    value: formData.email
                 });
             }
-        });
+            
+            // Optional standard fields
+            if (formData.phone) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "phone",
+                    value: formData.phone
+                });
+            }
+            
+            if (formData.company) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "company",
+                    value: formData.company
+                });
+            }
+            
+            // Custom fields (will be created by user in HubSpot) with proper value mapping
+            if (formData.service) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "service_type",
+                    value: serviceMapping[formData.service] || formData.service
+                });
+            }
+            
+            if (formData.timeline) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "preferred_timeline",
+                    value: timelineMapping[formData.timeline] || formData.timeline
+                });
+            }
+            
+            if (formData.budget) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "budget_range",
+                    value: budgetMapping[formData.budget] || formData.budget
+                });
+            }
+            
+            if (formData.description) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "project_description",
+                    value: formData.description
+                });
+            }
+            
+            if (formData.inspiration) {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "inspiration___reference_sites",
+                    value: formData.inspiration
+                });
+            }
+            
+            // Multiple checkboxes field for lead magnet opt-in
+            if (formData.ai_template_opt === 'yes') {
+                fields.push({
+                    objectTypeId: "0-1",
+                    name: "ai_template_opt",
+                    value: "Yes, send me the free AI templates"
+                });
+            }
+            } // End of DEBUG_MODE conditional
+            
+            console.log('🚀 NEURIX FORM DEBUG - Submitting to HubSpot');
+            console.log('📝 Raw form data received:', formData);
+            console.log('🎯 Mapped fields for HubSpot:', fields);
+            
+            // Debug: Log each field being sent with extra detail
+            console.group('🔍 Field-by-field analysis:');
+            fields.forEach(field => {
+                console.log(`📤 ${field.name} = "${field.value}" (${typeof field.value})`);
+            });
+            console.groupEnd();
+            
+            // Debug: Log specific problematic fields
+            console.group('🔍 Checking problematic fields:');
+            console.log(`💰 Budget: "${formData.budget}" → "${budgetMapping[formData.budget] || formData.budget}"`);
+            console.log(`✅ AI Templates: "${formData.ai_template_opt}" → ${formData.ai_template_opt === 'yes' ? '"Yes, send me the free AI templates"' : 'not included'}`);
+            console.log(`🎯 Service: "${formData.service}" → "${serviceMapping[formData.service] || formData.service}"`);
+            console.groupEnd();
+            
+            // Debug: Log context information
+            const hutkToken = getHubSpotToken();
+            console.group('🔍 Context & Authentication:');
+            console.log(`🏷️ HUTK Token: "${hutkToken}"`);
+            console.log(`🌐 Page URI: "${window.location.href}"`);
+            console.log(`🍪 All Cookies: "${document.cookie}"`);
+            console.log(`📍 Referrer: "${document.referrer}"`);
+            console.groupEnd();
+            
+            // Log the final payload before sending
+            const payload = {
+                fields: fields,
+                context: {
+                    pageUri: window.location.href,
+                    pageName: 'Contact Form - Neurix Funnel',
+                    hutk: getHubSpotToken(),
+                    ipAddress: '', // Will be auto-detected by HubSpot
+                    pageId: window.location.pathname,
+                    redirectUrl: window.location.href
+                }
+            };
+            
+            console.log('📤 Final Payload being sent to HubSpot:', JSON.stringify(payload, null, 2));
+            
+            return fetch('https://api.hsforms.com/submissions/v3/integration/submit/243252967/2nXFFRz5qQZeoDL5DxCIzMw', {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+        }
     </script>
 </body>
 </html>
